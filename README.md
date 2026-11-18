@@ -37,19 +37,80 @@ log of every call built in.
 
 ## Features
 
-- **Keep your SDK, switch any model.** OpenAI, Anthropic and Gemini clients can
-  all call any chat model. Streaming, tools, images and reasoning are
-  translated for you.
-- **More than chat.** Realtime voice, images, video, speech, transcription and
-  embeddings go through the same gateway.
-- **Tools for every model.** Put MCP servers or built-in tools (web search,
-  browsers, code sandboxes, memory) behind it, and any model can use them.
-- **Never go down.** Routes, fallback, retries and hedged requests that race a
-  slow provider against a second one.
-- **See every call.** A built-in web UI with cost, latency and tokens per
-  request, plus traces in [Respan](https://respan.ai).
-- **Fast and small.** One Rust binary: 0.07 ms added latency, 56k requests/s,
-  31 MB of memory.
+<table>
+<tr>
+<td width="40%" valign="middle">
+
+### Keep your SDK, call any model
+
+OpenAI, Anthropic and Gemini clients can all call any chat model. Streaming, tools, images and reasoning are translated both ways.
+
+[Docs →](docs/vendors.md)
+
+</td>
+<td width="60%"><img src="docs/assets/features/any-sdk.png" alt="The Anthropic SDK calling gpt-6-luna; the gateway translates Messages to Chat Completions and back" width="100%"></td>
+</tr>
+<tr>
+<td width="40%" valign="middle">
+
+### Not just LLMs
+
+Realtime voice (OpenAI Realtime ⇄ Gemini Live), images, video, speech, transcription and embeddings go through the same gateway.
+
+[Docs →](docs/vendors.md)
+
+</td>
+<td width="60%"><img src="docs/assets/features/multimodal.png" alt="A realtime voice waveform, a generated image, video frames and an embedding vector" width="100%"></td>
+</tr>
+<tr>
+<td width="40%" valign="middle">
+
+### Tools for every model
+
+Put MCP servers or built-in tools (web search, browsers, code sandboxes, memory) behind the gateway. It runs the tool loop, so any model can use them from a plain chat call.
+
+[Docs →](docs/mcp.md)
+
+</td>
+<td width="60%"><img src="docs/assets/features/tools.png" alt="A chat that calls web search, a browser fetch and memory through MCP before answering" width="100%"></td>
+</tr>
+<tr>
+<td width="40%" valign="middle">
+
+### Never go down
+
+Routes with fallback and retries, and hedged requests that race a slow provider against the next one. Pick the first, cheapest or fastest.
+
+[Docs →](docs/configuration.md)
+
+</td>
+<td width="60%"><img src="docs/assets/features/never-down.png" alt="Claude returns 529 and the call falls back to GPT; a hedged request where Gemini wins after 800ms" width="100%"></td>
+</tr>
+<tr>
+<td width="40%" valign="middle">
+
+### Your own plugins
+
+Every feature is a plugin on one public Rust API: one trait, four hooks. Recipes cover guardrails, PII masking, billing and an LLM judge.
+
+[Docs →](docs/plugins.md)
+
+</td>
+<td width="60%"><img src="docs/assets/features/plugins.png" alt="A plugin from examples/recipes/pii.rs that replaces emails with placeholders before the provider sees them" width="100%"></td>
+</tr>
+<tr>
+<td width="40%" valign="middle">
+
+### See every call
+
+A built-in web UI logs every call with its cost, latency and tokens. Add a Respan key and every request is traced in [Respan](https://respan.ai).
+
+[Docs →](docs/configuration.md)
+
+</td>
+<td width="60%"><img src="docs/assets/features/observe.png" alt="A request log with status, model, latency and cost, and a trace with four spans" width="100%"></td>
+</tr>
+</table>
 
 ## Quickstart
 
