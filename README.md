@@ -35,9 +35,6 @@ log of every call built in.
   <img alt="A terminal running pip install respan-gateway, then respan-gateway listening on 127.0.0.1:8080 with OpenAI, Anthropic and Gemini as providers" src="docs/assets/hero.jpg" width="900">
 </p>
 
-> [!TIP]
-> Starring the repo helps more developers find Respan Gateway.
-
 ## Features
 
 - **Keep your SDK, switch any model.** OpenAI, Anthropic and Gemini clients can
