@@ -18,9 +18,9 @@
 
   <p>
     <a href="#quickstart"><b>Quickstart</b></a> ·
-    <a href="docs/configuration.md"><b>Docs</b></a> ·
-    <a href="docs/vendors.md"><b>Providers</b></a> ·
-    <a href="#performance"><b>Benchmarks</b></a> ·
+    <a href="https://www.respan.ai/docs/oss-gateway/introduction"><b>Docs</b></a> ·
+    <a href="https://www.respan.ai/models"><b>Hosted models</b></a> ·
+    <a href="https://gateway.respan.ai"><b>Endpoints</b></a> ·
     <a href="https://www.youtube.com/watch?v=pVv2ibXiTXM"><b>▶ Demo</b></a>
   </p>
 </div>
