@@ -68,7 +68,10 @@
   const dot = c => `<b style="background:${c}"></b>`;
   // a chat is labeled with its model, under its maker's mark where we have one
   const MARK = { openai: 'openai-dark', anthropic: 'anthropic-dark', google: 'gemini', xai: 'xai-dark', deepseek: 'deepseek', mistral: 'mistral' };
-  const model = (maker, id) => (MARK[maker] ? `<img src="../vendors/${MARK[maker]}.svg" style="width:13px;height:13px">` : dot('#6483f0'))
+  // marks from respan.ai's landing (dark fill, inverted here); MiniMax flattened as respan.ai does
+  const OWN = { qwen: 'invert(1)', moonshot: 'invert(1)', z_ai: 'invert(1)', minimax: 'brightness(0) invert(.89)' };
+  const model = (maker, id) => (MARK[maker] ? `<img src="../vendors/${MARK[maker]}.svg" style="width:13px;height:13px">`
+      : `<img src="logos/${maker}.svg" style="width:13px;height:13px;filter:${OWN[maker]}">`)
     + `<span style="text-transform:none;letter-spacing:0;color:#c3c5ce">${id}</span>`;
   const T = {
     chat: (m, q, a) => `<div class="t"><div class="lab mono">${model(...m)}</div><div class="bub u">${q}</div><div class="bub a">${a}</div></div>`,
