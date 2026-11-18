@@ -18,7 +18,7 @@
   .card pre .p { color: #8f9cff; }
   .cur { display: inline-block; width: 28px; height: 56px; background: #e9e9ee; vertical-align: -10px; margin-left: 10px; }
 
-  .rows { position: absolute; inset: -160px -200px; transform: rotate(-8deg); display: flex; flex-direction: column; gap: 18px; }
+  .rows { position: absolute; inset: -160px -200px; transform: rotate(-8deg); filter: grayscale(1) blur(1.6px); display: flex; flex-direction: column; gap: 18px; }
   .row { display: flex; gap: 14px; white-space: nowrap; }
   .pill { display: flex; align-items: center; gap: 12px; height: 64px; padding: 0 24px; border-radius: 999px; background: #131317;
     box-shadow: inset 0 0 0 1px #26262c; font-size: 22px; font-weight: 500; letter-spacing: -.01em; color: #e6e7ec; flex: none; }
@@ -35,7 +35,7 @@
   .pill .ok { color: #31de4b; } .pill .bad { color: #f55656; } .pill .ar { color: #6b6d76; }
   .pill .spans { display: flex; flex-direction: column; gap: 3px; width: 96px; }
   .pill .spans i { display: block; height: 5px; border-radius: 3px; background: #8f9cff; }
-  .shade { position: absolute; inset: 0; z-index: 2; background: rgba(0,0,0,.66); }
+  .shade { position: absolute; inset: 0; z-index: 2; background: rgba(0,0,0,.74); }
 
 </style></head><body>
 <div class="rows" id="rows"></div><div class="shade"></div>
