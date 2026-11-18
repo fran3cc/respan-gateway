@@ -24,6 +24,13 @@
     box-shadow: inset 0 0 0 1px #26262c; font-size: 22px; font-weight: 500; letter-spacing: -.01em; color: #e6e7ec; flex: none; }
   .pill.ph { padding: 0; width: 150px; overflow: hidden; }
   .pill.ph img { width: 100%; height: 100%; object-fit: cover; }
+  .pill.ph { position: relative; }
+  .pill .play { position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; background: rgba(0,0,0,.55); }
+  .pill .play::before { content: ""; position: absolute; left: 11px; top: 8px; border-left: 11px solid #fff; border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
+  .pill .k { font-size: 15px; color: #8b8d96; font-family: Inter, -apple-system, Helvetica, sans-serif; }
+  .pill .w { display: flex; align-items: center; gap: 3px; height: 30px; }
+  .pill .w i { width: 3px; border-radius: 2px; background: #e6e7ec; display: block; }
+  .pill .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
   .shade { position: absolute; inset: 0; z-index: 2; background: radial-gradient(ellipse 46% 52% at 50% 52%, rgba(0,0,0,.96), rgba(0,0,0,.88) 55%, rgba(0,0,0,.4)); }
 
 </style></head><body>
@@ -48,9 +55,23 @@
     ['deepseek','deepseek-v4-pro'],['openai','gpt-6-astra']];
   const PHOTOS = ['p1','p5','p2','p9','p3','p6','p4','p7','p8','p10'];
 
-  let k = 0, p = 0, h = '';
+  // the other kinds the gateway carries, as pills between the models
+  const wave = n => { let w = ''; for (let i = 0; i < n; i++) w += `<i style="height:${5 + Math.abs(Math.sin(i * .6)) * rnd() * 24}px"></i>`; return `<span class="w">${w}</span>`; };
+  const vec = () => { const v = []; for (let i = 0; i < 4; i++) v.push((rnd() * 2 - 1).toFixed(2)); return `[${v.join(', ')}, …]`; };
+  const KINDS = [
+    () => `<span class="pill">${mark('openai', 24)}<span class="mono">gpt-realtime</span>${wave(16)}</span>`,
+    () => `<span class="pill"><span class="dot" style="background:#ffb340"></span><span class="k">embedding</span><span class="mono">${vec()}</span></span>`,
+    () => `<span class="pill ph" style="width:190px"><img src="../img/${PHOTOS[p++ % PHOTOS.length]}.jpg"><span class="play"></span></span>`,
+    () => `<span class="pill">${mark('google', 24)}<span class="mono">gemini-live</span>${wave(16)}</span>`,
+    () => `<span class="pill"><span class="dot" style="background:#f55656"></span><span class="mono">web_search("flights to Tokyo")</span></span>`,
+    () => `<span class="pill"><span class="dot" style="background:#31de4b"></span><span class="k">transcript</span>“Book a table for two”</span>`,
+    () => `<span class="pill">${mark('mistral', 24)}<span class="k">speech</span>${wave(14)}</span>`,
+    () => `<span class="pill ph"><img src="../img/${PHOTOS[p++ % PHOTOS.length]}.jpg"></span>`,
+  ];
+  let k = 0, p = 0, q = 0, h = '';
   for (let r = 0; r < 14; r++) { let row = '';
-    for (let i = 0; i < 14; i++) { if ((r + i) % 6 === 3) row += `<span class="pill ph"><img src="../img/${PHOTOS[p++ % PHOTOS.length]}.jpg"></span>`;
+    for (let i = 0; i < 13; i++) {
+      if ((r * 5 + i * 3) % 4 === 1) row += KINDS[q++ % KINDS.length]();
       else { const [m, id] = MODELS[k++ % MODELS.length]; row += `<span class="pill mono">${mark(m, 24)}${id}</span>`; } }
     h += `<div class="row" style="margin-left:${-(r * 97) % 260}px">${row}</div>`; }
   document.getElementById('rows').innerHTML = h;

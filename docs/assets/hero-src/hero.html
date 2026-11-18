@@ -1,41 +1,12 @@
 <!doctype html>
-<!-- Source of docs/assets/hero.jpg. Render: sh docs/assets/hero-src/render.sh
-     Two commands in front; behind them, the kinds of AI the gateway carries. -->
-<html>
-<head>
-<meta charset="utf-8">
-<style>
+<!-- Source of docs/assets/hero.jpg (style b-ticker; others in styles/). Render: sh docs/assets/hero-src/render.sh. Photos in ../img were generated through gateway.respan.ai (seedream-5.0-flash). -->
+<html><head><meta charset="utf-8"><style>
   * { box-sizing: border-box; margin: 0; }
   html, body { width: 1600px; height: 760px; overflow: hidden; background: #000; }
   body { position: relative; color: #f9fafc; -webkit-font-smoothing: antialiased;
     font: 15px/1.35 Inter, -apple-system, "SF Pro Text", "Segoe UI", Helvetica, sans-serif; }
   .mono { font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace; }
-
-  /* the backdrop: a wall of multimodal tiles, fading out toward the commands */
-  .wall { position: absolute; inset: 14px -30px -40px; columns: 7; column-gap: 14px; }
-  .shade { position: absolute; inset: 0;
-    background: radial-gradient(ellipse 42% 48% at 50% 52%, #000 0%, rgba(0,0,0,.94) 50%, rgba(0,0,0,.55) 100%); }
-  .t { break-inside: avoid; margin-bottom: 14px; border-radius: 14px; background: #121216;
-    box-shadow: inset 0 0 0 1px #24242a; padding: 14px; overflow: hidden; }
-  .t .lab { font-size: 11px; letter-spacing: .1em; color: #6b6d76; text-transform: uppercase; margin-bottom: 10px; display: flex; gap: 6px; align-items: center; }
-  .t .lab b { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
-  .bub { padding: 8px 11px; border-radius: 12px; font-size: 14px; margin-top: 6px; max-width: 92%; }
-  .bub.u { background: #2a2a31; margin-left: auto; width: fit-content; }
-  .bub.a { background: #1b1b21; color: #c9cad2; }
-  .art { height: 150px; border-radius: 10px; overflow: hidden; }
-  .frames { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
-  .frames div { height: 64px; border-radius: 6px; overflow: hidden; }
-  .vbar { display: flex; align-items: center; margin-top: 10px; font-size: 12px; color: #8b8d96; }
-  .vbar i { flex: 1; height: 3px; background: #2a2a31; border-radius: 2px; margin: 0 10px; position: relative; }
-  .vbar i::before { content: ""; position: absolute; inset: 0 62% 0 0; background: #f9fafc; border-radius: 2px; }
-  .wave { display: flex; align-items: center; gap: 3px; height: 54px; }
-  .wave span { width: 4px; border-radius: 2px; background: #f9fafc; }
-  .code { font-size: 13px; color: #b1b3bc; white-space: pre; }
-  .code em { color: #f9fafc; font-style: normal; }
-  .quote { font-size: 16px; color: #e6e7ec; }
-
-  /* the commands */
-  .card { position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); width: 1100px;
+  .card { position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); width: 1100px; z-index: 5;
     background: rgba(9, 9, 14, .97); border-radius: 22px; overflow: hidden;
     box-shadow: 0 0 0 1px rgba(255,255,255,.09), 0 50px 120px 10px #000, 0 20px 40px -20px rgba(0,0,0,.6); }
   .bar { position: relative; height: 70px; display: flex; align-items: center; padding: 0 28px; }
@@ -46,82 +17,63 @@
   .card pre { padding: 18px 56px 52px; font-size: 52px; line-height: 1.6; letter-spacing: -.5px; color: #e9e9ee; }
   .card pre .p { color: #8f9cff; }
   .cur { display: inline-block; width: 28px; height: 56px; background: #e9e9ee; vertical-align: -10px; margin-left: 10px; }
-</style>
-</head>
-<body>
-<div class="wall" id="wall"></div>
-<div class="shade"></div>
 
+  .rows { position: absolute; inset: -160px -200px; transform: rotate(-8deg); display: flex; flex-direction: column; gap: 18px; }
+  .row { display: flex; gap: 14px; white-space: nowrap; }
+  .pill { display: flex; align-items: center; gap: 12px; height: 64px; padding: 0 24px; border-radius: 999px; background: #131317;
+    box-shadow: inset 0 0 0 1px #26262c; font-size: 22px; font-weight: 500; letter-spacing: -.01em; color: #e6e7ec; flex: none; }
+  .pill.ph { padding: 0; width: 150px; overflow: hidden; }
+  .pill.ph img { width: 100%; height: 100%; object-fit: cover; }
+  .pill.ph { position: relative; }
+  .pill .play { position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; background: rgba(0,0,0,.55); }
+  .pill .play::before { content: ""; position: absolute; left: 11px; top: 8px; border-left: 11px solid #fff; border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
+  .pill .k { font-size: 15px; color: #8b8d96; font-family: Inter, -apple-system, Helvetica, sans-serif; }
+  .pill .w { display: flex; align-items: center; gap: 3px; height: 30px; }
+  .pill .w i { width: 3px; border-radius: 2px; background: #e6e7ec; display: block; }
+  .pill .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .shade { position: absolute; inset: 0; z-index: 2; background: radial-gradient(ellipse 46% 52% at 50% 52%, rgba(0,0,0,.96), rgba(0,0,0,.88) 55%, rgba(0,0,0,.4)); }
+
+</style></head><body>
+<div class="rows" id="rows"></div><div class="shade"></div>
 <div class="card">
   <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i>
     <span class="ti"><img src="../vendors/respan-dark.svg" alt="">Get started with Respan Gateway</span></div>
 <pre class="mono"><span class="p">pip install</span> respan-gateway
 <span class="p">respan-gateway</span><span class="cur"></span></pre>
 </div>
-
 <script>
-  // seeded, so every render is the same picture
   let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  // photos generated through gateway.respan.ai (seedream-5.0-flash)
-  const PHOTOS = ['p1', 'p5', 'p2', 'p9', 'p3', 'p6', 'p4', 'p7', 'p8', 'p10'];
-  let pi = 0; const photo = () => PHOTOS[pi++ % PHOTOS.length];
-  const dot = c => `<b style="background:${c}"></b>`;
-  // a chat is labeled with its model, under its maker's mark where we have one
-  const MARK = { openai: 'openai-dark', anthropic: 'anthropic-dark', google: 'gemini', xai: 'xai-dark', deepseek: 'deepseek', mistral: 'mistral' };
-  // marks from respan.ai's landing (dark fill, inverted here); MiniMax flattened as respan.ai does
-  const OWN = { qwen: 'invert(1)', moonshot: 'invert(1)', z_ai: 'invert(1)', minimax: 'brightness(0) invert(.89)' };
-  const model = (maker, id) => (MARK[maker] ? `<img src="../vendors/${MARK[maker]}.svg" style="width:13px;height:13px">`
-      : `<img src="logos/${maker}.svg" style="width:13px;height:13px;filter:${OWN[maker]}">`)
-    + `<span style="text-transform:none;letter-spacing:0;color:#c3c5ce">${id}</span>`;
-  const T = {
-    chat: (m, q, a) => `<div class="t"><div class="lab mono">${model(...m)}</div><div class="bub u">${q}</div><div class="bub a">${a}</div></div>`,
-    image: () => `<div class="t"><div class="lab">${dot('#e879f9')}image</div><div class="art"><img src="img/${photo()}.jpg" style="width:100%;height:100%;object-fit:cover;display:block"></div></div>`,
-    video: t => { const f = photo(), fr = x => `<div><img src="img/${f}.jpg" style="width:100%;height:100%;object-fit:cover;object-position:${x}% 50%;display:block"></div>`;
-      return `<div class="t"><div class="lab">${dot('#f59e0b')}video</div><div class="frames">${fr(0)}${fr(50)}${fr(100)}</div><div class="vbar mono">▶<i></i>${t}</div></div>`; },
-    voice: () => { let s = ''; for (let i = 0; i < 38; i++) s += `<span style="height:${8 + Math.abs(Math.sin(i * .55)) * rnd() * 46}px"></span>`;
-      return `<div class="t"><div class="lab">${dot('#31de4b')}realtime voice</div><div class="wave">${s}</div></div>`; },
-    embed: () => { const v = []; for (let i = 0; i < 6; i++) v.push((rnd() * 2 - 1).toFixed(3));
-      return `<div class="t"><div class="lab">${dot('#ffb340')}embedding</div><div class="code mono">[${v.slice(0, 3).join(', ')},\n ${v.slice(3).join(', ')}, …]</div></div>`; },
-    tool: (f, a) => `<div class="t"><div class="lab">${dot('#f55656')}tool call</div><div class="code mono"><em>${f}</em>(${a})</div></div>`,
-  };
-  const C = T.chat;
-  document.getElementById('wall').innerHTML = [
-    C(['anthropic', 'claude-opus-5-5'], 'Refactor this into a hook', 'Here is useInvoices(), with…'),
-    T.image(),
-    C(['openai', 'gpt-6-luna'], 'Summarize this PDF', 'Three points: revenue grew 18%…'),
-    C(['google', 'gemini-4-argon'], 'Translate to Japanese', '承知しました。こちらが…'),
-    C(['deepseek', 'deepseek-v4.1-flash'], 'Why is this query slow?', 'It scans orders. Add an index on…'),
-    T.tool('web_search', '"flights to Tokyo"'),
-    C(['xai', 'grok-4.7'], 'What happened in markets today?', 'Tech led; the Nasdaq closed up…'),
-    C(['qwen', 'qwen3.8-max'], 'Write a SQL migration', 'ALTER TABLE users ADD COLUMN…'),
-    T.voice(),
-    C(['anthropic', 'claude-sonnet-5-5'], 'Review my PR', 'Two issues: the retry loop never…'),
-    C(['moonshot', 'kimi-k3'], 'Explain this stack trace', 'The panic comes from unwrap() on…'),
-    T.image(),
-    C(['openai', 'gpt-6.1-sol'], 'Draft a reply to Sam', 'Hi Sam, thanks for the notes…'),
-    C(['mistral', 'mistral-large-3'], 'Résume ce contrat', 'Durée : 24 mois, résiliation…'),
-    T.embed(),
-    C(['z_ai', 'glm-5.3'], 'Plan a 3-day trip to Kyoto', 'Day 1: Fushimi Inari at dawn…'),
-    C(['google', 'gemini-3.8-flash'], 'Classify these tickets', 'billing: 12, bug: 7, other: 3'),
-    T.video('00:06'),
-    C(['anthropic', 'claude-haiku-5-5'], 'Extract the dates', '["2026-11-03", "2026-12-01"]'),
-    C(['minimax', 'minimax-m3'], 'Write a product tagline', 'Every model. One endpoint.'),
-    C(['openai', 'gpt-6-astra'], 'Is this function pure?', 'No: it reads Date.now().'),
-    T.tool('run_python', 'code'),
-    C(['deepseek', 'deepseek-v4-pro'], 'Prove it terminates', 'The measure n − i strictly…'),
-    T.image(),
-    C(['xai', 'grok-4.6'], 'Roast my landing page', 'Your hero has three CTAs…'),
-    C(['google', 'gemini-4-argon'], 'What is in this photo?', 'A rainy street in Tokyo at night.'),
-    C(['anthropic', 'claude-opus-5-5'], 'Write tests for parse()', 'Six cases, including empty input…'),
-    T.voice(),
-    C(['openai', 'gpt-6-luna'], 'Fix this regex', 'Escape the dot: ^v\\d+\\.\\d+$'),
-    C(['qwen', 'qwen3.7-plus'], '把这段话改得更简洁', '好的，精简后：…'),
-    T.embed(),
-    C(['moonshot', 'kimi-k2.6'], 'Compare these two APIs', 'B paginates; A streams. For…'),
-    T.image(),
-    C(['anthropic', 'claude-sonnet-5-5'], 'Name this function', 'retryWithBackoff()'),
-    C(['openai', 'gpt-6.1-terra'], 'Convert to TypeScript', 'type Order = { id: string; …'),
-  ].join('');
-</script>
-</body>
-</html>
+  // maker marks: the repo's vendor logos, plus respan.ai's for the rest (dark fill, inverted)
+  const MK = { anthropic: '../vendors/anthropic-dark.svg', openai: '../vendors/openai-dark.svg', google: '../vendors/gemini.svg',
+    xai: '../vendors/xai-dark.svg', deepseek: '../vendors/deepseek.svg', mistral: '../vendors/mistral.svg',
+    qwen: 'logos/qwen.svg', moonshot: 'logos/moonshot.svg', z_ai: 'logos/z_ai.svg', minimax: 'logos/minimax.svg' };
+  const INV = { qwen: 'invert(1)', moonshot: 'invert(1)', z_ai: 'invert(1)', minimax: 'brightness(0) invert(.89)' };
+  const mark = (m, px) => `<img src="${MK[m]}" style="width:${px}px;height:${px}px;flex:none;filter:${INV[m] || 'none'}">`;
+  const MODELS = [['anthropic','claude-opus-5-5'],['openai','gpt-6-luna'],['google','gemini-4-argon'],['deepseek','deepseek-v4.1-flash'],
+    ['mistral','mistral-large-3'],['xai','grok-4.7'],['qwen','qwen3.8-max'],['moonshot','kimi-k3'],['anthropic','claude-sonnet-5-5'],
+    ['z_ai','glm-5.3'],['openai','gpt-6.1-sol'],['minimax','minimax-m3'],['google','gemini-3.8-flash'],['anthropic','claude-haiku-5-5'],
+    ['deepseek','deepseek-v4-pro'],['openai','gpt-6-astra']];
+  const PHOTOS = ['p1','p5','p2','p9','p3','p6','p4','p7','p8','p10'];
+
+  // the other kinds the gateway carries, as pills between the models
+  const wave = n => { let w = ''; for (let i = 0; i < n; i++) w += `<i style="height:${5 + Math.abs(Math.sin(i * .6)) * rnd() * 24}px"></i>`; return `<span class="w">${w}</span>`; };
+  const vec = () => { const v = []; for (let i = 0; i < 4; i++) v.push((rnd() * 2 - 1).toFixed(2)); return `[${v.join(', ')}, …]`; };
+  const KINDS = [
+    () => `<span class="pill">${mark('openai', 24)}<span class="mono">gpt-realtime</span>${wave(16)}</span>`,
+    () => `<span class="pill"><span class="dot" style="background:#ffb340"></span><span class="k">embedding</span><span class="mono">${vec()}</span></span>`,
+    () => `<span class="pill ph" style="width:190px"><img src="img/${PHOTOS[p++ % PHOTOS.length]}.jpg"><span class="play"></span></span>`,
+    () => `<span class="pill">${mark('google', 24)}<span class="mono">gemini-live</span>${wave(16)}</span>`,
+    () => `<span class="pill"><span class="dot" style="background:#f55656"></span><span class="mono">web_search("flights to Tokyo")</span></span>`,
+    () => `<span class="pill"><span class="dot" style="background:#31de4b"></span><span class="k">transcript</span>“Book a table for two”</span>`,
+    () => `<span class="pill">${mark('mistral', 24)}<span class="k">speech</span>${wave(14)}</span>`,
+    () => `<span class="pill ph"><img src="img/${PHOTOS[p++ % PHOTOS.length]}.jpg"></span>`,
+  ];
+  let k = 0, p = 0, q = 0, h = '';
+  for (let r = 0; r < 14; r++) { let row = '';
+    for (let i = 0; i < 13; i++) {
+      if ((r * 5 + i * 3) % 4 === 1) row += KINDS[q++ % KINDS.length]();
+      else { const [m, id] = MODELS[k++ % MODELS.length]; row += `<span class="pill mono">${mark(m, 24)}${id}</span>`; } }
+    h += `<div class="row" style="margin-left:${-(r * 97) % 260}px">${row}</div>`; }
+  document.getElementById('rows').innerHTML = h;
+
+</script></body></html>
