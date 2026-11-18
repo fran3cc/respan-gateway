@@ -114,16 +114,38 @@ Telemetry is built in: the web UI logs every call's cost, latency and tokens, an
 
 ## Quickstart
 
+**1. Install**
+
 ```bash
 pip install respan-gateway
+```
+
+<details>
+<summary>Other ways to install</summary>
+
+| | |
+|---|---|
+| Shell script | `curl -fsSL https://raw.githubusercontent.com/respanai/respan-gateway/main/install.sh \| sh` |
+| Cargo | `cargo install respan-gateway` |
+| Docker | `docker run -p 8080:8080 -e OPENAI_API_KEY -e RESPAN_CLIENT_KEYS=<your key> ghcr.io/respanai/respan-gateway` |
+| Binaries | [GitHub releases](https://github.com/respanai/respan-gateway/releases) for macOS, Linux and Windows |
+| Inside Python | [Run it in-process](python/README.md), with no server |
+| Inside Rust | [Mount it in your own service](docs/plugins.md#in-a-gateway-of-your-own) |
+
+</details>
+
+**2. Run it with a provider key**
+
+```bash
 export OPENAI_API_KEY=sk-...
 respan-gateway
 ```
 
-That's it: no config file. Every provider whose key is set is ready, and the
-web UI is at [localhost:8080/ui/](http://localhost:8080/ui/).
+No config file needed: every provider whose key is set is ready. No provider
+keys? One [Respan key](https://www.respan.ai/models) (`RESPAN_API_KEY`) reaches
+every hosted model. The web UI is at [localhost:8080/ui/](http://localhost:8080/ui/).
 
-Now call a GPT model from the Anthropic SDK:
+**3. Call any model from the SDK you already use**
 
 ```python
 from anthropic import Anthropic
@@ -137,21 +159,7 @@ reply = client.messages.create(
 print(reply.content[0].text)
 ```
 
-<details>
-<summary><b>Other ways to install and run</b></summary>
-
-| | |
-|---|---|
-| Shell script | `curl -fsSL https://raw.githubusercontent.com/respanai/respan-gateway/main/install.sh \| sh` |
-| Cargo | `cargo install respan-gateway` |
-| Docker | `docker run -p 8080:8080 -e OPENAI_API_KEY -e RESPAN_CLIENT_KEYS=<your key> ghcr.io/respanai/respan-gateway` |
-| Binaries | [GitHub releases](https://github.com/respanai/respan-gateway/releases) for macOS, Linux and Windows |
-| Inside Python | [Run it in-process](python/README.md), with no server |
-| Inside Rust | [Mount it in your own service](docs/plugins.md#in-a-gateway-of-your-own) |
-
-Listening beyond localhost, the gateway needs a client key.
-
-</details>
+The real provider keys stay in the gateway, so `api_key` can be anything.
 
 ## Works with your SDK
 
