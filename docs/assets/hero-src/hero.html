@@ -12,9 +12,9 @@
   .mono { font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace; }
 
   /* the backdrop: a wall of multimodal tiles, fading out toward the commands */
-  .wall { position: absolute; inset: -40px -30px; columns: 7; column-gap: 14px; }
+  .wall { position: absolute; inset: -40px -30px; columns: 7; column-gap: 14px; filter: saturate(.85); }
   .shade { position: absolute; inset: 0;
-    background: radial-gradient(ellipse 36% 42% at 50% 52%, #000 0%, rgba(0,0,0,.9) 50%, rgba(0,0,0,.3) 100%); }
+    background: radial-gradient(ellipse 42% 48% at 50% 52%, #000 0%, rgba(0,0,0,.94) 50%, rgba(0,0,0,.55) 100%); }
   .t { break-inside: avoid; margin-bottom: 14px; border-radius: 14px; background: #121216;
     box-shadow: inset 0 0 0 1px #24242a; padding: 14px; overflow: hidden; }
   .t .lab { font-size: 11px; letter-spacing: .1em; color: #6b6d76; text-transform: uppercase; margin-bottom: 10px; display: flex; gap: 6px; align-items: center; }
@@ -35,14 +35,14 @@
   .quote { font-size: 16px; color: #e6e7ec; }
 
   /* the commands */
-  .card { position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); width: 760px;
-    background: #0c0c10; border-radius: 26px; padding: 32px 44px 42px;
+  .card { position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); width: 1120px;
+    background: #0a0a0d; border-radius: 30px; padding: 40px 60px 56px;
     box-shadow: 0 0 0 1px #2e2e33, 0 40px 120px 20px #000, 0 0 160px -20px rgba(100,131,240,.3); }
-  .card .hd { display: flex; align-items: center; gap: 12px; color: #9a9ca6; font-size: 17px; font-weight: 500; }
-  .card .hd img { height: 24px; }
-  .card pre { margin-top: 26px; font-size: 40px; line-height: 1.6; letter-spacing: -.5px; }
+  .card .hd { display: flex; align-items: center; gap: 14px; color: #9a9ca6; font-size: 22px; font-weight: 500; }
+  .card .hd img { height: 30px; }
+  .card pre { margin-top: 32px; font-size: 58px; line-height: 1.6; letter-spacing: -.5px; }
   .card pre .s { color: #5d5f68; }
-  .cur { display: inline-block; width: 20px; height: 42px; background: #f9fafc; vertical-align: -7px; margin-left: 6px; }
+  .cur { display: inline-block; width: 30px; height: 62px; background: #f9fafc; vertical-align: -11px; margin-left: 8px; }
 </style>
 </head>
 <body>
@@ -74,12 +74,16 @@
       <rect width="300" height="200" fill="url(#${id})"/><circle cx="${sun[0]}" cy="${sun[1]}" r="26" fill="${p[2]}" opacity=".95"/>
       <path d="${ridge(110, 18, .02, ph)}" fill="${p[3]}"/><path d="${ridge(138, 14, .03, ph + 2)}" fill="${p[4]}"/><path d="${ridge(165, 10, .045, ph + 4)}" fill="${p[5]}"/></svg>`; };
   const pick = () => PAL[Math.floor(rnd() * PAL.length)];
-  const art = () => scene(pick(), [60 + rnd() * 180, 50 + rnd() * 40], rnd() * 6);
+  // photos generated through gateway.respan.ai (seedream-5.0-flash)
+  const PHOTOS = ['t1', 't3', 't5', 't6', 't2', 't7', 't9', 't10', 't8', 't4'];
+  let pi = 0; const photo = () => { const n = PHOTOS.length, i = pi++ % (2 * n); return PHOTOS[i < n ? i : 2 * n - 1 - i]; };
+  const art = () => `<img src="img/${photo()}.jpg" style="width:100%;height:100%;object-fit:cover;display:block">`;
   const dot = c => `<b style="background:${c}"></b>`;
   const T = {
     chat: (q, a) => `<div class="t"><div class="lab">${dot('#6483f0')}chat</div><div class="bub u">${q}</div><div class="bub a">${a}</div></div>`,
     image: () => `<div class="t"><div class="lab">${dot('#e879f9')}image</div><div class="art">${art()}</div></div>`,
-    video: t => { const p = pick(), ph = rnd() * 6; return `<div class="t"><div class="lab">${dot('#f59e0b')}video</div><div class="frames"><div>${scene(p, [70, 95], ph)}</div><div>${scene(p, [150, 72], ph)}</div><div>${scene(p, [230, 58], ph)}</div></div><div class="vbar mono">▶<i></i>${t}</div></div>`; },
+    video: t => { const f = photo(), fr = x => `<div><img src="img/${f}.jpg" style="width:100%;height:100%;object-fit:cover;object-position:${x}% 50%;display:block"></div>`;
+      return `<div class="t"><div class="lab">${dot('#f59e0b')}video</div><div class="frames">${fr(0)}${fr(50)}${fr(100)}</div><div class="vbar mono">▶<i></i>${t}</div></div>`; },
     voice: () => { let s = ''; for (let i = 0; i < 38; i++) s += `<span style="height:${8 + Math.abs(Math.sin(i * .55)) * rnd() * 46}px"></span>`;
       return `<div class="t"><div class="lab">${dot('#31de4b')}realtime voice</div><div class="wave">${s}</div></div>`; },
     transcript: q => `<div class="t"><div class="lab">${dot('#31de4b')}transcription</div><div class="quote">“${q}”</div></div>`,
