@@ -12,7 +12,7 @@
   .mono { font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace; }
 
   /* the backdrop: a wall of multimodal tiles, fading out toward the commands */
-  .wall { position: absolute; inset: -40px -30px; columns: 7; column-gap: 14px; filter: saturate(.85); }
+  .wall { position: absolute; inset: 14px -30px -40px; columns: 7; column-gap: 14px; }
   .shade { position: absolute; inset: 0;
     background: radial-gradient(ellipse 42% 48% at 50% 52%, #000 0%, rgba(0,0,0,.94) 50%, rgba(0,0,0,.55) 100%); }
   .t { break-inside: avoid; margin-bottom: 14px; border-radius: 14px; background: #121216;
@@ -35,14 +35,17 @@
   .quote { font-size: 16px; color: #e6e7ec; }
 
   /* the commands */
-  .card { position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); width: 1120px;
-    background: #0a0a0d; border-radius: 30px; padding: 40px 60px 56px;
-    box-shadow: 0 0 0 1px #2e2e33, 0 40px 120px 20px #000, 0 0 160px -20px rgba(100,131,240,.3); }
-  .card .hd { display: flex; align-items: center; gap: 14px; color: #9a9ca6; font-size: 22px; font-weight: 500; }
-  .card .hd img { height: 30px; }
-  .card pre { margin-top: 32px; font-size: 58px; line-height: 1.6; letter-spacing: -.5px; }
-  .card pre .s { color: #5d5f68; }
-  .cur { display: inline-block; width: 30px; height: 62px; background: #f9fafc; vertical-align: -11px; margin-left: 8px; }
+  .card { position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); width: 1100px;
+    background: rgba(9, 9, 14, .97); border-radius: 22px; overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.09), 0 50px 120px 10px #000, 0 20px 40px -20px rgba(0,0,0,.6); }
+  .bar { position: relative; height: 70px; display: flex; align-items: center; padding: 0 28px; }
+  .bar i { width: 18px; height: 18px; border-radius: 50%; margin-right: 11px; display: block; }
+  .bar .ti { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; gap: 12px;
+    font-size: 22px; font-weight: 600; letter-spacing: -.02em; color: #f4f4f6; }
+  .bar .ti img { height: 26px; }
+  .card pre { padding: 18px 56px 52px; font-size: 52px; line-height: 1.6; letter-spacing: -.5px; color: #e9e9ee; }
+  .card pre .p { color: #8f9cff; }
+  .cur { display: inline-block; width: 28px; height: 56px; background: #e9e9ee; vertical-align: -10px; margin-left: 10px; }
 </style>
 </head>
 <body>
@@ -50,60 +53,71 @@
 <div class="shade"></div>
 
 <div class="card">
-  <div class="hd"><img src="../vendors/respan-dark.svg" alt="">Respan Gateway</div>
-<pre class="mono"><span class="s">$</span> pip install respan-gateway
-<span class="s">$</span> respan-gateway<span class="cur"></span></pre>
+  <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i>
+    <span class="ti"><img src="../vendors/respan-dark.svg" alt="">Get started with Respan Gateway</span></div>
+<pre class="mono"><span class="p">pip install</span> respan-gateway
+<span class="p">respan-gateway</span><span class="cur"></span></pre>
 </div>
 
 <script>
   // seeded, so every render is the same picture
   let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  const hue = () => Math.floor(rnd() * 360);
-  // a landscape scene: sky, sun, three ridges; a video's frames move the sun
-  const PAL = [
-    ['#1d2b64', '#f8cdda', '#ffd166', '#5b3f8c', '#3b2a6b', '#1f1640'],
-    ['#0f2027', '#2c5364', '#e0f7fa', '#1b4d5c', '#123843', '#0a222a'],
-    ['#ff7e5f', '#feb47b', '#fff3b0', '#c4517a', '#8e3a6e', '#4a2150'],
-    ['#4facfe', '#c2e9fb', '#ffffff', '#3a7d44', '#2c5f34', '#1d3f23'],
-    ['#2b1055', '#d53369', '#ffb199', '#6a1b4d', '#46113b', '#250a24'],
-    ['#87ceeb', '#fdfbfb', '#ffe28a', '#7aa7c7', '#4f7da1', '#2e4f6b'],
-  ];
-  const ridge = (y, amp, f, ph) => { let d = `M0,${y}`; for (let x = 0; x <= 300; x += 10) d += ` L${x},${(y + Math.sin(x * f + ph) * amp + Math.sin(x * f * 2.7 + ph) * amp * .35).toFixed(1)}`; return d + ' L300,200 L0,200Z'; };
-  const scene = (p, sun, ph) => { const id = 'g' + Math.floor(rnd() * 1e9);
-    return `<svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" width="100%" height="100%"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${p[0]}"/><stop offset="1" stop-color="${p[1]}"/></linearGradient></defs>
-      <rect width="300" height="200" fill="url(#${id})"/><circle cx="${sun[0]}" cy="${sun[1]}" r="26" fill="${p[2]}" opacity=".95"/>
-      <path d="${ridge(110, 18, .02, ph)}" fill="${p[3]}"/><path d="${ridge(138, 14, .03, ph + 2)}" fill="${p[4]}"/><path d="${ridge(165, 10, .045, ph + 4)}" fill="${p[5]}"/></svg>`; };
-  const pick = () => PAL[Math.floor(rnd() * PAL.length)];
   // photos generated through gateway.respan.ai (seedream-5.0-flash)
-  const PHOTOS = ['t1', 't3', 't5', 't6', 't2', 't7', 't9', 't10', 't8', 't4'];
-  let pi = 0; const photo = () => { const n = PHOTOS.length, i = pi++ % (2 * n); return PHOTOS[i < n ? i : 2 * n - 1 - i]; };
-  const art = () => `<img src="img/${photo()}.jpg" style="width:100%;height:100%;object-fit:cover;display:block">`;
+  const PHOTOS = ['p1', 'p5', 'p2', 'p9', 'p3', 'p6', 'p4', 'p7', 'p8', 'p10'];
+  let pi = 0; const photo = () => PHOTOS[pi++ % PHOTOS.length];
   const dot = c => `<b style="background:${c}"></b>`;
+  // a chat is labeled with its model, under its maker's mark where we have one
+  const MARK = { openai: 'openai-dark', anthropic: 'anthropic-dark', google: 'gemini', xai: 'xai-dark', deepseek: 'deepseek', mistral: 'mistral' };
+  const model = (maker, id) => (MARK[maker] ? `<img src="../vendors/${MARK[maker]}.svg" style="width:13px;height:13px">` : dot('#6483f0'))
+    + `<span style="text-transform:none;letter-spacing:0;color:#c3c5ce">${id}</span>`;
   const T = {
-    chat: (q, a) => `<div class="t"><div class="lab">${dot('#6483f0')}chat</div><div class="bub u">${q}</div><div class="bub a">${a}</div></div>`,
-    image: () => `<div class="t"><div class="lab">${dot('#e879f9')}image</div><div class="art">${art()}</div></div>`,
+    chat: (m, q, a) => `<div class="t"><div class="lab mono">${model(...m)}</div><div class="bub u">${q}</div><div class="bub a">${a}</div></div>`,
+    image: () => `<div class="t"><div class="lab">${dot('#e879f9')}image</div><div class="art"><img src="img/${photo()}.jpg" style="width:100%;height:100%;object-fit:cover;display:block"></div></div>`,
     video: t => { const f = photo(), fr = x => `<div><img src="img/${f}.jpg" style="width:100%;height:100%;object-fit:cover;object-position:${x}% 50%;display:block"></div>`;
       return `<div class="t"><div class="lab">${dot('#f59e0b')}video</div><div class="frames">${fr(0)}${fr(50)}${fr(100)}</div><div class="vbar mono">▶<i></i>${t}</div></div>`; },
     voice: () => { let s = ''; for (let i = 0; i < 38; i++) s += `<span style="height:${8 + Math.abs(Math.sin(i * .55)) * rnd() * 46}px"></span>`;
       return `<div class="t"><div class="lab">${dot('#31de4b')}realtime voice</div><div class="wave">${s}</div></div>`; },
-    transcript: q => `<div class="t"><div class="lab">${dot('#31de4b')}transcription</div><div class="quote">“${q}”</div></div>`,
     embed: () => { const v = []; for (let i = 0; i < 6; i++) v.push((rnd() * 2 - 1).toFixed(3));
       return `<div class="t"><div class="lab">${dot('#ffb340')}embedding</div><div class="code mono">[${v.slice(0, 3).join(', ')},\n ${v.slice(3).join(', ')}, …]</div></div>`; },
     tool: (f, a) => `<div class="t"><div class="lab">${dot('#f55656')}tool call</div><div class="code mono"><em>${f}</em>(${a})</div></div>`,
-    speech: () => { let s = ''; for (let i = 0; i < 38; i++) s += `<span style="height:${6 + rnd() * 30}px;opacity:.7"></span>`;
-      return `<div class="t"><div class="lab">${dot('#31de4b')}speech</div><div class="wave" style="height:40px">${s}</div></div>`; },
   };
+  const C = T.chat;
   document.getElementById('wall').innerHTML = [
-    T.image(), T.chat('Summarize this PDF', 'Three points: revenue grew 18%…'), T.voice(), T.embed(),
-    T.video('00:06'), T.tool('web_search', '"flights to Tokyo"'), T.image(), T.transcript('Book a table for two at seven'),
-    T.chat('Translate to French', 'Bien sûr ! Voici…'), T.image(), T.speech(), T.tool('run_python', 'code'),
-    T.video('00:12'), T.embed(), T.image(), T.chat('What is in this photo?', 'A red bicycle by a canal.'),
-    T.voice(), T.image(), T.tool('browse', '"respan.ai"'), T.transcript('Move the meeting to Friday'),
-    T.image(), T.video('00:04'), T.chat('Write a haiku', 'Packets cross the wire…'), T.embed(),
-    T.image(), T.speech(), T.tool('memory.save', '"likes jazz"'), T.image(),
-    T.chat('Plan a 3-day trip', 'Day 1: Shibuya and…'), T.voice(), T.image(), T.video('00:09'),
-    T.transcript('Remind me at noon'), T.embed(), T.image(), T.tool('get_weather', '"Lisbon"'),
-    T.chat('Fix this SQL', 'Add GROUP BY user_id.'), T.image(), T.speech(), T.video('00:15'),
+    C(['anthropic', 'claude-opus-5-5'], 'Refactor this into a hook', 'Here is useInvoices(), with…'),
+    T.image(),
+    C(['openai', 'gpt-6-luna'], 'Summarize this PDF', 'Three points: revenue grew 18%…'),
+    C(['google', 'gemini-4-argon'], 'Translate to Japanese', '承知しました。こちらが…'),
+    C(['deepseek', 'deepseek-v4.1-flash'], 'Why is this query slow?', 'It scans orders. Add an index on…'),
+    T.tool('web_search', '"flights to Tokyo"'),
+    C(['xai', 'grok-4.7'], 'What happened in markets today?', 'Tech led; the Nasdaq closed up…'),
+    C(['qwen', 'qwen3.8-max'], 'Write a SQL migration', 'ALTER TABLE users ADD COLUMN…'),
+    T.voice(),
+    C(['anthropic', 'claude-sonnet-5-5'], 'Review my PR', 'Two issues: the retry loop never…'),
+    C(['moonshot', 'kimi-k3'], 'Explain this stack trace', 'The panic comes from unwrap() on…'),
+    T.image(),
+    C(['openai', 'gpt-6.1-sol'], 'Draft a reply to Sam', 'Hi Sam, thanks for the notes…'),
+    C(['mistral', 'mistral-large-3'], 'Résume ce contrat', 'Durée : 24 mois, résiliation…'),
+    T.embed(),
+    C(['z_ai', 'glm-5.3'], 'Plan a 3-day trip to Kyoto', 'Day 1: Fushimi Inari at dawn…'),
+    C(['google', 'gemini-3.8-flash'], 'Classify these tickets', 'billing: 12, bug: 7, other: 3'),
+    T.video('00:06'),
+    C(['anthropic', 'claude-haiku-5-5'], 'Extract the dates', '["2026-11-03", "2026-12-01"]'),
+    C(['minimax', 'minimax-m3'], 'Write a product tagline', 'Every model. One endpoint.'),
+    C(['openai', 'gpt-6-astra'], 'Is this function pure?', 'No: it reads Date.now().'),
+    T.tool('run_python', 'code'),
+    C(['deepseek', 'deepseek-v4-pro'], 'Prove it terminates', 'The measure n − i strictly…'),
+    T.image(),
+    C(['xai', 'grok-4.6'], 'Roast my landing page', 'Your hero has three CTAs…'),
+    C(['google', 'gemini-4-argon'], 'What is in this photo?', 'A rainy street in Tokyo at night.'),
+    C(['anthropic', 'claude-opus-5-5'], 'Write tests for parse()', 'Six cases, including empty input…'),
+    T.voice(),
+    C(['openai', 'gpt-6-luna'], 'Fix this regex', 'Escape the dot: ^v\\d+\\.\\d+$'),
+    C(['qwen', 'qwen3.7-plus'], '把这段话改得更简洁', '好的，精简后：…'),
+    T.embed(),
+    C(['moonshot', 'kimi-k2.6'], 'Compare these two APIs', 'B paginates; A streams. For…'),
+    T.image(),
+    C(['anthropic', 'claude-sonnet-5-5'], 'Name this function', 'retryWithBackoff()'),
+    C(['openai', 'gpt-6.1-terra'], 'Convert to TypeScript', 'type Order = { id: string; …'),
   ].join('');
 </script>
 </body>
