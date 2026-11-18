@@ -12,7 +12,7 @@
   .mono { font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace; }
 
   /* the backdrop: a wall of multimodal tiles, fading out toward the commands */
-  .wall { position: absolute; inset: 14px -30px -40px; columns: 7; column-gap: 14px; }
+  .wall { position: absolute; inset: 16px 16px -40px; columns: 7; column-gap: 14px; }
   .shade { position: absolute; inset: 0;
     background: radial-gradient(ellipse 42% 48% at 50% 52%, #000 0%, rgba(0,0,0,.94) 50%, rgba(0,0,0,.55) 100%); }
   .t { break-inside: avoid; margin-bottom: 14px; border-radius: 14px; background: #121216;
@@ -32,6 +32,10 @@
   .wave span { width: 4px; border-radius: 2px; background: #f9fafc; }
   .code { font-size: 13px; color: #b1b3bc; white-space: pre; }
   .code em { color: #f9fafc; font-style: normal; }
+  .chat { padding: 16px 16px 18px; }
+  .who { display: flex; align-items: center; gap: 10px; font-size: 21px; font-weight: 600; letter-spacing: -.02em; color: #f4f4f6; }
+  .who img { width: 22px; height: 22px; }
+  .say { margin-top: 10px; font-size: 14px; color: #8b8d96; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .quote { font-size: 16px; color: #e6e7ec; }
 
   /* the commands */
@@ -66,15 +70,10 @@
   const PHOTOS = ['p1', 'p5', 'p2', 'p9', 'p3', 'p6', 'p4', 'p7', 'p8', 'p10'];
   let pi = 0; const photo = () => PHOTOS[pi++ % PHOTOS.length];
   const dot = c => `<b style="background:${c}"></b>`;
-  // a chat is labeled with its model, under its maker's mark where we have one
-  const MARK = { openai: 'openai-dark', anthropic: 'anthropic-dark', google: 'gemini', xai: 'xai-dark', deepseek: 'deepseek', mistral: 'mistral' };
-  // marks from respan.ai's landing (dark fill, inverted here); MiniMax flattened as respan.ai does
-  const OWN = { qwen: 'invert(1)', moonshot: 'invert(1)', z_ai: 'invert(1)', minimax: 'brightness(0) invert(.89)' };
-  const model = (maker, id) => (MARK[maker] ? `<img src="../vendors/${MARK[maker]}.svg" style="width:13px;height:13px">`
-      : `<img src="logos/${maker}.svg" style="width:13px;height:13px;filter:${OWN[maker]}">`)
-    + `<span style="text-transform:none;letter-spacing:0;color:#c3c5ce">${id}</span>`;
+  // a chat is its model's name, big, over one short line
+  const MARK = { Claude: 'anthropic-dark', GPT: 'openai-dark', Gemini: 'gemini', Mistral: 'mistral', DeepSeek: 'deepseek' };
   const T = {
-    chat: (m, q, a) => `<div class="t"><div class="lab mono">${model(...m)}</div><div class="bub u">${q}</div><div class="bub a">${a}</div></div>`,
+    chat: (m, q) => `<div class="t chat"><div class="who"><img src="../vendors/${MARK[m]}.svg">${m}</div><div class="say">${q}</div></div>`,
     image: () => `<div class="t"><div class="lab">${dot('#e879f9')}image</div><div class="art"><img src="img/${photo()}.jpg" style="width:100%;height:100%;object-fit:cover;display:block"></div></div>`,
     video: t => { const f = photo(), fr = x => `<div><img src="img/${f}.jpg" style="width:100%;height:100%;object-fit:cover;object-position:${x}% 50%;display:block"></div>`;
       return `<div class="t"><div class="lab">${dot('#f59e0b')}video</div><div class="frames">${fr(0)}${fr(50)}${fr(100)}</div><div class="vbar mono">▶<i></i>${t}</div></div>`; },
@@ -86,41 +85,18 @@
   };
   const C = T.chat;
   document.getElementById('wall').innerHTML = [
-    C(['anthropic', 'claude-opus-5-5'], 'Refactor this into a hook', 'Here is useInvoices(), with…'),
-    T.image(),
-    C(['openai', 'gpt-6-luna'], 'Summarize this PDF', 'Three points: revenue grew 18%…'),
-    C(['google', 'gemini-4-argon'], 'Translate to Japanese', '承知しました。こちらが…'),
-    C(['deepseek', 'deepseek-v4.1-flash'], 'Why is this query slow?', 'It scans orders. Add an index on…'),
-    T.tool('web_search', '"flights to Tokyo"'),
-    C(['xai', 'grok-4.7'], 'What happened in markets today?', 'Tech led; the Nasdaq closed up…'),
-    C(['qwen', 'qwen3.8-max'], 'Write a SQL migration', 'ALTER TABLE users ADD COLUMN…'),
-    T.voice(),
-    C(['anthropic', 'claude-sonnet-5-5'], 'Review my PR', 'Two issues: the retry loop never…'),
-    C(['moonshot', 'kimi-k3'], 'Explain this stack trace', 'The panic comes from unwrap() on…'),
-    T.image(),
-    C(['openai', 'gpt-6.1-sol'], 'Draft a reply to Sam', 'Hi Sam, thanks for the notes…'),
-    C(['mistral', 'mistral-large-3'], 'Résume ce contrat', 'Durée : 24 mois, résiliation…'),
-    T.embed(),
-    C(['z_ai', 'glm-5.3'], 'Plan a 3-day trip to Kyoto', 'Day 1: Fushimi Inari at dawn…'),
-    C(['google', 'gemini-3.8-flash'], 'Classify these tickets', 'billing: 12, bug: 7, other: 3'),
-    T.video('00:06'),
-    C(['anthropic', 'claude-haiku-5-5'], 'Extract the dates', '["2026-11-03", "2026-12-01"]'),
-    C(['minimax', 'minimax-m3'], 'Write a product tagline', 'Every model. One endpoint.'),
-    C(['openai', 'gpt-6-astra'], 'Is this function pure?', 'No: it reads Date.now().'),
-    T.tool('run_python', 'code'),
-    C(['deepseek', 'deepseek-v4-pro'], 'Prove it terminates', 'The measure n − i strictly…'),
-    T.image(),
-    C(['xai', 'grok-4.6'], 'Roast my landing page', 'Your hero has three CTAs…'),
-    C(['google', 'gemini-4-argon'], 'What is in this photo?', 'A rainy street in Tokyo at night.'),
-    C(['anthropic', 'claude-opus-5-5'], 'Write tests for parse()', 'Six cases, including empty input…'),
-    T.voice(),
-    C(['openai', 'gpt-6-luna'], 'Fix this regex', 'Escape the dot: ^v\\d+\\.\\d+$'),
-    C(['qwen', 'qwen3.7-plus'], '把这段话改得更简洁', '好的，精简后：…'),
-    T.embed(),
-    C(['moonshot', 'kimi-k2.6'], 'Compare these two APIs', 'B paginates; A streams. For…'),
-    T.image(),
-    C(['anthropic', 'claude-sonnet-5-5'], 'Name this function', 'retryWithBackoff()'),
-    C(['openai', 'gpt-6.1-terra'], 'Convert to TypeScript', 'type Order = { id: string; …'),
+    C('Claude', 'Refactor this into a hook'), T.image(), C('GPT', 'Summarize this PDF'), C('Gemini', 'Translate to Japanese'),
+    C('DeepSeek', 'Why is this query slow?'), C('Mistral', 'Résume ce contrat'), T.tool('web_search', '"flights to Tokyo"'),
+    C('Claude', 'Review my PR'), T.voice(), C('GPT', 'Draft a reply to Sam'), C('Gemini', 'What is in this photo?'),
+    C('DeepSeek', 'Prove it terminates'), T.image(), C('Mistral', 'Write a haiku'), C('Claude', 'Write tests for parse()'),
+    T.embed(), C('GPT', 'Fix this regex'), C('Gemini', 'Classify these tickets'), T.video('00:06'),
+    C('DeepSeek', 'Explain this stack trace'), C('Claude', 'Name this function'), C('Mistral', 'Plan a trip to Lyon'),
+    T.image(), C('GPT', 'Convert to TypeScript'), C('Gemini', 'Extract the dates'), C('Claude', 'Is this function pure?'),
+    T.voice(), C('DeepSeek', 'Write a migration'), C('GPT', 'Compare these two APIs'), C('Mistral', 'Fix my SQL'),
+    T.image(), C('Gemini', 'Describe this chart'), C('Claude', 'Simplify this paragraph'), C('GPT', 'Brainstorm names'),
+    C('Mistral', 'Rewrite in French'), C('DeepSeek', 'Optimize this loop'), C('Gemini', 'Summarize the call'), T.tool('run_python', 'code'),
+    C('Claude', 'Draft the release notes'), C('GPT', 'Explain like I am five'), C('DeepSeek', 'Find the bug'), C('Mistral', 'Tag these emails'),
+    C('Gemini', 'Write alt text'), C('Claude', 'Plan the migration'), C('GPT', 'Outline a talk'), C('DeepSeek', 'Solve for x'),
   ].join('');
 </script>
 </body>

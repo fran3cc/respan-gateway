@@ -1,8 +1,8 @@
 <div align="center">
   <a href="https://www.respan.ai">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="docs/assets/wordmark-dark.png">
-      <img src="docs/assets/wordmark.png" alt="Respan Gateway" width="360">
+      <source media="(prefers-color-scheme: dark)" srcset="docs/assets/respan-wordmark-dark.svg">
+      <img src="docs/assets/respan-wordmark.svg" alt="Respan" width="260">
     </picture>
   </a>
 
