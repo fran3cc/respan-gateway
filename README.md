@@ -9,7 +9,7 @@
   <h3>Respan Gateway: one universal adapter for AI.</h3>
 
   <p>
-    <a href="https://github.com/respanai/respan-gateway/releases"><img src="https://img.shields.io/github/v/release/respanai/respan-gateway?style=flat&label=release&color=6D28D9" alt="Latest release"></a>
+    <a href="https://www.ycombinator.com/companies/respan"><img src="https://img.shields.io/badge/Y%20Combinator-W24-F26625?style=flat&logo=ycombinator&logoColor=white" alt="Y Combinator W24"></a>
     <a href="https://pypi.org/project/respan-gateway/"><img src="https://img.shields.io/pypi/v/respan-gateway?style=flat&logo=python&logoColor=white&label=PyPI&color=6D28D9" alt="PyPI"></a>
     <a href="https://crates.io/crates/respan-gateway"><img src="https://img.shields.io/crates/v/respan-gateway?style=flat&logo=rust&label=crates.io&color=6D28D9" alt="crates.io"></a>
     <a href="#license"><img src="https://img.shields.io/badge/license-MIT%20%2F%20Apache--2.0-brightgreen?style=flat" alt="License: MIT or Apache-2.0"></a>
