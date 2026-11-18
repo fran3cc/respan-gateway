@@ -58,16 +58,23 @@
   // the other kinds the gateway carries, as pills between the models
   const wave = n => { let w = ''; for (let i = 0; i < n; i++) w += `<i style="height:${6 + Math.abs(Math.sin(i * .45)) * (.35 + rnd() * .65) * 38}px"></i>`; return `<span class="w">${w}</span>`; };
   const vec = () => { const v = []; for (let i = 0; i < 4; i++) v.push((rnd() * 2 - 1).toFixed(2)); return `[${v.join(', ')}, …]`; };
+  // the other kinds, interleaved so each shows up around the commands
   const KINDS = [
     () => `<span class="pill">${mark('openai', 24)}<span class="mono">gpt-realtime</span>${wave(30)}</span>`,
-    () => `<span class="pill"><span class="dot" style="background:#ffb340"></span><span class="k">embedding</span><span class="mono">${vec()}</span></span>`,
-    () => `<span class="pill ph" style="width:190px"><img src="img/${PHOTOS[p++ % PHOTOS.length]}.jpg"><span class="play"></span></span>`,
+    () => `<span class="pill">${mark('openai', 24)}<span class="k">embedding</span><span class="mono">${vec()}</span></span>`,
+    () => `<span class="pill ph" style="width:170px"><img src="img/${PHOTOS[p++ % PHOTOS.length]}.jpg"></span>`,
     () => `<span class="pill">${mark('google', 24)}<span class="mono">gemini-live</span>${wave(30)}</span>`,
+    () => `<span class="pill">${mark('google', 24)}<span class="k">embedding</span><span class="mono">${vec()}</span></span>`,
+    () => `<span class="pill ph" style="width:190px"><img src="img/${PHOTOS[p++ % PHOTOS.length]}.jpg"><span class="play"></span></span>`,
     () => `<span class="pill"><span class="dot" style="background:#f55656"></span><span class="mono">web_search("flights to Tokyo")</span></span>`,
+    () => `<span class="pill ph" style="width:150px"><img src="img/${PHOTOS[p++ % PHOTOS.length]}.jpg"></span>`,
+    () => `<span class="pill">${mark('mistral', 24)}<span class="k">embedding</span><span class="mono">${vec()}</span></span>`,
     () => `<span class="pill"><span class="dot" style="background:#31de4b"></span><span class="k">transcript</span>“Book a table for two”</span>`,
     () => `<span class="pill">${mark('mistral', 24)}<span class="k">speech</span>${wave(26)}</span>`,
-    () => `<span class="pill ph"><img src="img/${PHOTOS[p++ % PHOTOS.length]}.jpg"></span>`,
+    () => `<span class="pill ph" style="width:170px"><img src="img/${PHOTOS[p++ % PHOTOS.length]}.jpg"></span>`,
+    () => `<span class="pill">${mark('openai', 24)}<span class="k">embedding</span><span class="mono">${vec()}</span></span>`,
     () => `<span class="pill">${mark('openai', 24)}<span class="k">voice</span>${wave(34)}</span>`,
+    () => `<span class="pill ph" style="width:150px"><img src="img/${PHOTOS[p++ % PHOTOS.length]}.jpg"></span>`,
   ];
   let k = 0, p = 0, q = 0, h = '';
   for (let r = 0; r < 14; r++) { let row = '';
