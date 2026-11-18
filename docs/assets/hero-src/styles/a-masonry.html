@@ -12,9 +12,10 @@
   .mono { font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace; }
 
   /* the backdrop: a wall of multimodal tiles, fading out toward the commands */
-  .wall { position: absolute; inset: 14px -30px -40px; columns: 7; column-gap: 14px; }
+  .wall { position: absolute; inset: 14px -30px -40px; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 14px; align-items: start; }
+  .colm { display: flex; flex-direction: column; gap: 14px; }
   .shade { position: absolute; inset: 0; background: rgba(0,0,0,.66); }
-  .t { break-inside: avoid; margin-bottom: 14px; border-radius: 14px; background: #121216;
+  .t { border-radius: 14px; background: #121216;
     box-shadow: inset 0 0 0 1px #24242a; padding: 14px; overflow: hidden; }
   .t .lab { font-size: 11px; letter-spacing: .1em; color: #6b6d76; text-transform: uppercase; margin-bottom: 10px; display: flex; gap: 6px; align-items: center; }
   .t .lab b { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
@@ -31,6 +32,13 @@
   .wave span { width: 4px; border-radius: 2px; background: #f9fafc; }
   .code { font-size: 13px; color: #b1b3bc; white-space: pre; }
   .code em { color: #f9fafc; font-style: normal; }
+  .fb { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #c3c5ce; margin-top: 6px; }
+  .fb .bad { color: #f55656; margin-left: auto; } .fb .ok { color: #31de4b; margin-left: auto; }
+  .steps { font-size: 13px; color: #b1b3bc; line-height: 1.8; } .steps b { color: #6b6d76; font-weight: 400; margin-right: 8px; }
+  .t s { color: #6b6d76; text-decoration-color: #f55656; text-decoration-thickness: 2px; }
+  .spans { display: flex; flex-direction: column; gap: 6px; margin-top: 2px; }
+  .spans div { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #8b8d96; }
+  .spans i { display: block; height: 7px; border-radius: 4px; background: #8f9cff; }
   .quote { font-size: 16px; color: #e6e7ec; }
 
   /* the commands */
@@ -81,46 +89,29 @@
       return `<div class="t"><div class="lab">${dot('#31de4b')}realtime voice</div><div class="wave">${s}</div></div>`; },
     embed: () => { const v = []; for (let i = 0; i < 6; i++) v.push((rnd() * 2 - 1).toFixed(3));
       return `<div class="t"><div class="lab">${dot('#ffb340')}embedding</div><div class="code mono">[${v.slice(0, 3).join(', ')},\n ${v.slice(3).join(', ')}, …]</div></div>`; },
+    fallback: () => `<div class="t"><div class="lab">${dot('#f55656')}fallback</div>
+      <div class="fb mono">${model('anthropic', 'claude-opus-5-5')}<span class="bad">529</span></div>
+      <div class="fb mono">${model('openai', 'gpt-6-luna')}<span class="ok">200</span></div></div>`,
+    loop: () => `<div class="t"><div class="lab">${dot('#8f9cff')}tool loop</div><div class="steps mono"><b>1</b>web_search("…")<br><b>2</b>fetch(url)<br><b>3</b>answer</div></div>`,
+    pii: () => `<div class="t"><div class="lab">${dot('#ffb340')}PII redaction</div><div class="code mono"><s>jane@acme.com</s> → [EMAIL]\n<s>4242 4242 4242</s> → [CARD]</div></div>`,
+    trace: () => `<div class="t"><div class="lab">${dot('#6483f0')}trace · 4 spans · 1.2s</div><div class="spans">
+      <div><i style="width:100%"></i></div><div><i style="width:52%;margin-left:6%"></i></div><div><i style="width:34%;margin-left:60%"></i></div><div><i style="width:18%;margin-left:80%"></i></div></div></div>`,
+    hedge: () => `<div class="t"><div class="lab">${dot('#31de4b')}hedged request</div><div class="fb mono">${model('anthropic', 'claude-opus-5-5')}<span style="margin-left:auto;color:#8b8d96">800ms…</span></div><div class="fb mono">${model('google', 'gemini-3.8-flash')}<span class="ok">won</span></div></div>`,
     tool: (f, a) => `<div class="t"><div class="lab">${dot('#f55656')}tool call</div><div class="code mono"><em>${f}</em>(${a})</div></div>`,
   };
   const C = T.chat;
-  document.getElementById('wall').innerHTML = [
-    C(['anthropic', 'claude-opus-5-5'], 'Refactor this into a hook', 'Here is useInvoices(), with…'),
-    T.image(),
-    C(['openai', 'gpt-6-luna'], 'Summarize this PDF', 'Three points: revenue grew 18%…'),
-    C(['google', 'gemini-4-argon'], 'Translate to Japanese', '承知しました。こちらが…'),
-    C(['deepseek', 'deepseek-v4.1-flash'], 'Why is this query slow?', 'It scans orders. Add an index on…'),
-    T.tool('web_search', '"flights to Tokyo"'),
-    C(['xai', 'grok-4.7'], 'What happened in markets today?', 'Tech led; the Nasdaq closed up…'),
-    C(['qwen', 'qwen3.8-max'], 'Write a SQL migration', 'ALTER TABLE users ADD COLUMN…'),
-    T.voice(),
-    C(['anthropic', 'claude-sonnet-5-5'], 'Review my PR', 'Two issues: the retry loop never…'),
-    C(['moonshot', 'kimi-k3'], 'Explain this stack trace', 'The panic comes from unwrap() on…'),
-    T.image(),
-    C(['openai', 'gpt-6.1-sol'], 'Draft a reply to Sam', 'Hi Sam, thanks for the notes…'),
-    C(['mistral', 'mistral-large-3'], 'Résume ce contrat', 'Durée : 24 mois, résiliation…'),
-    T.embed(),
-    C(['z_ai', 'glm-5.3'], 'Plan a 3-day trip to Kyoto', 'Day 1: Fushimi Inari at dawn…'),
-    C(['google', 'gemini-3.8-flash'], 'Classify these tickets', 'billing: 12, bug: 7, other: 3'),
-    T.video('00:06'),
-    C(['anthropic', 'claude-haiku-5-5'], 'Extract the dates', '["2026-11-03", "2026-12-01"]'),
-    C(['minimax', 'minimax-m3'], 'Write a product tagline', 'Every model. One endpoint.'),
-    C(['openai', 'gpt-6-astra'], 'Is this function pure?', 'No: it reads Date.now().'),
-    T.tool('run_python', 'code'),
-    C(['deepseek', 'deepseek-v4-pro'], 'Prove it terminates', 'The measure n − i strictly…'),
-    T.image(),
-    C(['xai', 'grok-4.6'], 'Roast my landing page', 'Your hero has three CTAs…'),
-    C(['google', 'gemini-4-argon'], 'What is in this photo?', 'A rainy street in Tokyo at night.'),
-    C(['anthropic', 'claude-opus-5-5'], 'Write tests for parse()', 'Six cases, including empty input…'),
-    T.voice(),
-    C(['openai', 'gpt-6-luna'], 'Fix this regex', 'Escape the dot: ^v\\d+\\.\\d+$'),
-    C(['qwen', 'qwen3.7-plus'], '把这段话改得更简洁', '好的，精简后：…'),
-    T.embed(),
-    C(['moonshot', 'kimi-k2.6'], 'Compare these two APIs', 'B paginates; A streams. For…'),
-    T.image(),
-    C(['anthropic', 'claude-sonnet-5-5'], 'Name this function', 'retryWithBackoff()'),
-    C(['openai', 'gpt-6.1-terra'], 'Convert to TypeScript', 'type Order = { id: string; …'),
-  ].join('');
+  // seven fixed columns, so what does what stays where it can be seen: the edge columns in full,
+  // the top and bottom of the middle ones; chats fill the space behind the commands
+  const COLS = [
+    [C(['anthropic', 'claude-opus-5-5'], 'Refactor this into a hook', 'Here is useInvoices(), with…'), T.image(), C(['openai', 'gpt-6-luna'], 'Summarize this PDF', 'Three points: revenue grew 18%…'), C(['google', 'gemini-4-argon'], 'Translate to Japanese', '承知しました。こちらが…'), T.voice()],
+    [T.fallback(), C(['deepseek', 'deepseek-v4.1-flash'], 'Why is this query slow?', 'It scans orders. Add an index on…'), C(['xai', 'grok-4.7'], 'What moved markets?', 'Tech led; the Nasdaq…'), C(['qwen', 'qwen3.8-max'], 'Write a migration', 'ALTER TABLE users…'), T.pii()],
+    [T.voice(), C(['anthropic', 'claude-sonnet-5-5'], 'Review my PR', 'Two issues: the retry loop never…'), C(['moonshot', 'kimi-k3'], 'Explain this trace', 'The panic comes from…'), C(['openai', 'gpt-6.1-sol'], 'Draft a reply', 'Hi Sam, thanks…'), T.trace()],
+    [C(['mistral', 'mistral-large-3'], 'Résume ce contrat', 'Durée : 24 mois, résiliation…'), T.embed(), C(['z_ai', 'glm-5.3'], 'Plan a trip', 'Day 1: Fushimi Inari…'), C(['google', 'gemini-3.8-flash'], 'Classify tickets', 'billing: 12, bug: 7'), T.video('00:06')],
+    [T.loop(), C(['anthropic', 'claude-haiku-5-5'], 'Extract the dates', '["2026-11-03", "2026-12-01"]'), C(['minimax', 'minimax-m3'], 'Write a tagline', 'Every model. One endpoint.'), C(['openai', 'gpt-6-astra'], 'Is this pure?', 'No: it reads Date.now().'), C(['deepseek', 'deepseek-v4-pro'], 'Prove it terminates', 'The measure n − i strictly…')],
+    [T.hedge(), T.image(), C(['xai', 'grok-4.6'], 'Roast my page', 'Your hero has…'), C(['google', 'gemini-4-argon'], 'What is in this photo?', 'A rainy street…'), C(['anthropic', 'claude-opus-5-5'], 'Write tests for parse()', 'Six cases, including empty input…')],
+    [T.voice(), C(['openai', 'gpt-6-luna'], 'Fix this regex', 'Escape the dot: ^v\\d+\\.\\d+$'), C(['qwen', 'qwen3.7-plus'], '把这段话改得更简洁', '好的，精简后：…'), T.embed(), C(['moonshot', 'kimi-k2.6'], 'Compare these APIs', 'B paginates; A streams…'), T.image()],
+  ];
+  document.getElementById('wall').innerHTML = COLS.map(c => `<div class="colm">${c.join('')}</div>`).join('');
 </script>
 </body>
 </html>

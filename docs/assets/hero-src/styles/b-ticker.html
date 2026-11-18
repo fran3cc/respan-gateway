@@ -8,7 +8,7 @@
   .mono { font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace; }
   .card { position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); width: 1100px; z-index: 5;
     background: rgba(9, 9, 14, .97); border-radius: 22px; overflow: hidden;
-    box-shadow: 0 0 0 1px rgba(255,255,255,.09), 0 50px 120px 10px #000, 0 20px 40px -20px rgba(0,0,0,.6); }
+    box-shadow: 0 0 0 1px rgba(255,255,255,.09), 0 30px 70px -10px rgba(0,0,0,.85); }
   .bar { position: relative; height: 70px; display: flex; align-items: center; padding: 0 28px; }
   .bar i { width: 18px; height: 18px; border-radius: 50%; margin-right: 11px; display: block; }
   .bar .ti { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; gap: 12px;
@@ -31,6 +31,10 @@
   .pill .w { display: flex; align-items: center; gap: 4px; height: 44px; }
   .pill .w i { width: 4px; border-radius: 2px; background: #e6e7ec; display: block; }
   .pill .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .pill s { color: #6b6d76; text-decoration-color: #f55656; text-decoration-thickness: 2px; }
+  .pill .ok { color: #31de4b; } .pill .bad { color: #f55656; } .pill .ar { color: #6b6d76; }
+  .pill .spans { display: flex; flex-direction: column; gap: 3px; width: 96px; }
+  .pill .spans i { display: block; height: 5px; border-radius: 3px; background: #8f9cff; }
   .shade { position: absolute; inset: 0; z-index: 2; background: rgba(0,0,0,.66); }
 
 </style></head><body>
@@ -61,27 +65,34 @@
   // the other kinds, interleaved so each shows up around the commands
   const KINDS = [
     () => `<span class="pill">${mark('openai', 24)}<span class="mono">gpt-realtime</span>${wave(30)}</span>`,
-    () => `<span class="pill">${mark('openai', 24)}<span class="k">embedding</span><span class="mono">${vec()}</span></span>`,
+    () => `<span class="pill"><span class="k">fallback</span>${mark('anthropic', 22)}<span class="mono bad">529</span><span class="ar">→</span>${mark('openai', 22)}<span class="mono ok">200</span></span>`,
     () => `<span class="pill ph" style="width:170px"><img src="../img/${PHOTOS[p++ % PHOTOS.length]}.jpg"></span>`,
+    () => `<span class="pill">${mark('openai', 24)}<span class="k">embedding</span><span class="mono">${vec()}</span></span>`,
+    () => `<span class="pill"><span class="k">PII</span><span class="mono"><s>jane@acme.com</s> <span class="ar">→</span> [EMAIL]</span></span>`,
     () => `<span class="pill">${mark('google', 24)}<span class="mono">gemini-live</span>${wave(30)}</span>`,
-    () => `<span class="pill">${mark('google', 24)}<span class="k">embedding</span><span class="mono">${vec()}</span></span>`,
     () => `<span class="pill ph" style="width:190px"><img src="../img/${PHOTOS[p++ % PHOTOS.length]}.jpg"><span class="play"></span></span>`,
-    () => `<span class="pill"><span class="dot" style="background:#f55656"></span><span class="mono">web_search("flights to Tokyo")</span></span>`,
+    () => `<span class="pill"><span class="k">trace</span><span class="spans"><i style="width:100%"></i><i style="width:55%;margin-left:8%"></i><i style="width:30%;margin-left:62%"></i></span><span class="mono">4 spans · 1.2s</span></span>`,
+    () => `<span class="pill"><span class="k">tool loop</span><span class="mono">search → fetch → answer</span></span>`,
     () => `<span class="pill ph" style="width:150px"><img src="../img/${PHOTOS[p++ % PHOTOS.length]}.jpg"></span>`,
-    () => `<span class="pill">${mark('mistral', 24)}<span class="k">embedding</span><span class="mono">${vec()}</span></span>`,
+    () => `<span class="pill">${mark('google', 24)}<span class="k">embedding</span><span class="mono">${vec()}</span></span>`,
+    () => `<span class="pill"><span class="k">hedge</span><span class="mono">800ms</span><span class="ar">→</span>${mark('google', 22)}<span class="mono ok">won</span></span>`,
     () => `<span class="pill"><span class="dot" style="background:#31de4b"></span><span class="k">transcript</span>“Book a table for two”</span>`,
     () => `<span class="pill">${mark('mistral', 24)}<span class="k">speech</span>${wave(26)}</span>`,
     () => `<span class="pill ph" style="width:170px"><img src="../img/${PHOTOS[p++ % PHOTOS.length]}.jpg"></span>`,
-    () => `<span class="pill">${mark('openai', 24)}<span class="k">embedding</span><span class="mono">${vec()}</span></span>`,
-    () => `<span class="pill">${mark('openai', 24)}<span class="k">voice</span>${wave(34)}</span>`,
-    () => `<span class="pill ph" style="width:150px"><img src="../img/${PHOTOS[p++ % PHOTOS.length]}.jpg"></span>`,
   ];
-  let k = 0, p = 0, q = 0, h = '';
+  // every pill starts as a model; then the pills you can actually see (in the frame, clear of the commands)
+  // are spread evenly over the other kinds, so each kind shows up once or twice
+  let k = 0, p = 0, h = '';
   for (let r = 0; r < 14; r++) { let row = '';
-    for (let i = 0; i < 13; i++) {
-      if ((r * 5 + i * 3) % 4 === 1) row += KINDS[q++ % KINDS.length]();
-      else { const [m, id] = MODELS[k++ % MODELS.length]; row += `<span class="pill mono">${mark(m, 24)}${id}</span>`; } }
+    for (let i = 0; i < 13; i++) { const [m, id] = MODELS[k++ % MODELS.length]; row += `<span class="pill mono">${mark(m, 24)}${id}</span>`; }
     h += `<div class="row" style="margin-left:${-(r * 97) % 260}px">${row}</div>`; }
   document.getElementById('rows').innerHTML = h;
+  const card = document.querySelector('.card').getBoundingClientRect();
+  const seen = [...document.querySelectorAll('.pill')].filter(el => { const b = el.getBoundingClientRect(), cx = b.left + b.width / 2, cy = b.top + b.height / 2;
+    const inFrame = b.left > 24 && b.right < 1576 && b.top > 14 && b.bottom < 746;
+    const clear = b.right < card.left - 8 || b.left > card.right + 8 || b.bottom < card.top - 4 || b.top > card.bottom + 4;
+    return inFrame && clear; });
+  const step = seen.length / KINDS.length;
+  KINDS.forEach((make, j) => { const el = seen[Math.floor(j * step + step / 2)]; if (el) el.outerHTML = make(); });
 
 </script></body></html>
