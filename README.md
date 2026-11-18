@@ -6,9 +6,7 @@
     </picture>
   </a>
 
-  <h3>One fast, open-source gateway for every AI API.</h3>
-
-  <p>Point the SDK you already use at it. Call any model from any provider,<br>in any format, with fallback, tools and a live log of every call.</p>
+  <h3>Respan Gateway: one universal adapter for AI.</h3>
 
   <p>
     <a href="https://github.com/respanai/respan-gateway/releases"><img src="https://img.shields.io/github/v/release/respanai/respan-gateway?style=flat&label=release&color=6D28D9" alt="Latest release"></a>
@@ -27,8 +25,14 @@
   </p>
 </div>
 
+**Respan Gateway** is an open-source AI gateway: a single Rust binary between
+your code and every AI API. Not just LLMs: chat, realtime voice, images,
+video, speech, embeddings and tools, from every major provider. Point the SDK
+you already use at it, and call any of them, with fallback, tools and a live
+log of every call built in.
+
 <p align="center">
-  <img alt="Your app plugs into Respan Gateway, which connects it to models, voice, image and video, tools, embeddings and self-hosted models" src="docs/assets/gateway-hero.png" width="900">
+  <img alt="A terminal running pip install respan-gateway, then respan-gateway listening on 127.0.0.1:8080 with OpenAI, Anthropic and Gemini as providers" src="docs/assets/hero.jpg" width="900">
 </p>
 
 ## Why Respan Gateway
