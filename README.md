@@ -284,6 +284,8 @@ each one is in one place, so you don't have to dig through each tool's docs.
 <tr><td><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/tool-vendors/elevenlabs-dark.svg"><img src="docs/assets/tool-vendors/elevenlabs.svg" width="20" height="20" align="absmiddle" alt=""></picture>&nbsp;ElevenLabs</td><td><img src="docs/assets/tool-vendors/cloudinary.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;Cloudinary</td></tr>
 </table>
 
+**Your own**: anything missing is a plugin away, on the same Rust API every built-in feature uses. Start from the [plugin guide](docs/plugins.md) or a recipe: [guardrails](examples/recipes/guardrail.rs) · [PII masking](examples/recipes/pii.rs) · [billing](examples/recipes/billing.rs) · [LLM judge](examples/recipes/judge.rs) · [fallback](examples/recipes/fallback.rs) · [MCP proxy](examples/recipes/mcp_proxy.rs) · [all examples →](examples/README.md)
+
 ## Performance
 
 | | Respan Gateway | Bifrost | Portkey | LiteLLM (1 worker) |
@@ -293,12 +295,6 @@ each one is in one place, so you don't have to dig through each tool's docs.
 | Memory | **31 MB** | 488 MB | 350 MB | 418 MB |
 | 1k streams, success | **100%** | 92–100% | — | 79% |
 | p99 with 5% slow calls | **105 ms** | 2,002 ms | 2,003 ms | 2,024 ms |
-
-## Extend it
-
-Every feature is a plugin on one public Rust API: one trait, four hooks.
-Write your own from the [plugin guide](docs/plugins.md), or start from an
-[example](examples/README.md): guardrails, PII masking, billing, an LLM judge.
 
 ## Community
 
