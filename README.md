@@ -163,33 +163,41 @@ The real provider keys stay in the gateway, so `api_key` can be anything.
 
 ## Works with your SDK
 
-Anything with a base URL works. Set it to the gateway and keep your code:
+Every SDK, agent framework and coding agent that lets you set a base URL works
+with the gateway: point it at the gateway and keep your code. How to set it in
+each one is in one place, so you don't have to dig through each tool's docs.
 
-| SDK | Base URL |
+| Client | Base URL |
 |---|---|
-| OpenAI (Chat Completions or Responses) | `http://localhost:8080/v1` |
-| Anthropic | `http://localhost:8080` |
+| OpenAI SDK (Chat Completions, Responses) | `http://localhost:8080/v1` |
+| Anthropic SDK | `http://localhost:8080` |
 | Google GenAI | `http://localhost:8080` |
 
-Guides: [OpenAI SDK](https://www.respan.ai/docs/integrations/gateway/open-ai-sdk) ·
-[Anthropic SDK](https://www.respan.ai/docs/integrations/gateway/anthropic-sdk) ·
-[Google GenAI](https://www.respan.ai/docs/integrations/gateway/google-gen-ai) ·
-[Vercel AI SDK](https://www.respan.ai/docs/integrations/gateway/vercel-ai-sdk) ·
-[LangChain](https://www.respan.ai/docs/integrations/gateway/lang-chain) ·
-[Pydantic AI](https://www.respan.ai/docs/integrations/gateway/pydantic-ai) ·
-[OpenCode](https://www.respan.ai/docs/integrations/gateway/open-code) ·
-[more](https://www.respan.ai/docs/integrations/gateway/overview)
+**LLM SDKs:** [OpenAI SDK](https://www.respan.ai/docs/integrations/gateway/open-ai-sdk) · [Anthropic SDK](https://www.respan.ai/docs/integrations/gateway/anthropic-sdk) · [Google GenAI](https://www.respan.ai/docs/integrations/gateway/google-gen-ai) · [LiteLLM](https://www.respan.ai/docs/integrations/gateway/lite-llm)<br>
+**Agent frameworks:** [Vercel AI SDK](https://www.respan.ai/docs/integrations/gateway/vercel-ai-sdk) · [LangChain](https://www.respan.ai/docs/integrations/gateway/lang-chain) · [OpenAI Agents](https://www.respan.ai/docs/integrations/gateway/open-ai-agents) · [Claude Agent SDK](https://www.respan.ai/docs/integrations/gateway/claude-agent-sdk) · [Pydantic AI](https://www.respan.ai/docs/integrations/gateway/pydantic-ai)<br>
+**Coding agents:** [Claude Code](https://www.respan.ai/docs/integrations/gateway/claude-code) · [Codex CLI](https://www.respan.ai/docs/integrations/gateway/codex-cli) · [Cursor](https://www.respan.ai/docs/integrations/gateway/cursor) · [Gemini CLI](https://www.respan.ai/docs/integrations/gateway/gemini-cli) · [OpenCode](https://www.respan.ai/docs/integrations/gateway/open-code)
 
-## Providers
+[All other setup guides →](https://www.respan.ai/docs/integrations/gateway/overview)
 
-26 providers, plus any OpenAI-compatible endpoint.
+## Providers and tools
 
-<p>
-  <picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/vendors/openai-dark.svg"><img src="docs/assets/vendors/openai.svg" alt="OpenAI" title="OpenAI" width="28" height="28"></picture>&nbsp;&nbsp;<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/vendors/anthropic-dark.svg"><img src="docs/assets/vendors/anthropic.svg" alt="Anthropic" title="Anthropic" width="28" height="28"></picture>&nbsp;&nbsp;<img src="docs/assets/vendors/gemini.svg" alt="Gemini" title="Gemini" width="28" height="28">&nbsp;&nbsp;<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/vendors/xai-dark.svg"><img src="docs/assets/vendors/xai.svg" alt="xAI" title="xAI" width="28" height="28"></picture>&nbsp;&nbsp;<img src="docs/assets/vendors/deepseek.svg" alt="DeepSeek" title="DeepSeek" width="28" height="28">&nbsp;&nbsp;<img src="docs/assets/vendors/mistral.svg" alt="Mistral" title="Mistral" width="28" height="28">&nbsp;&nbsp;<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/vendors/groq-dark.svg"><img src="docs/assets/vendors/groq.svg" alt="Groq" title="Groq" width="28" height="28"></picture>&nbsp;&nbsp;<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/vendors/openrouter-dark.svg"><img src="docs/assets/vendors/openrouter.svg" alt="OpenRouter" title="OpenRouter" width="28" height="28"></picture>&nbsp;&nbsp;<img src="docs/assets/vendors/together.svg" alt="Together" title="Together" width="28" height="28">&nbsp;&nbsp;<img src="docs/assets/vendors/fireworks.svg" alt="Fireworks" title="Fireworks" width="28" height="28">&nbsp;&nbsp;<img src="docs/assets/vendors/cerebras.svg" alt="Cerebras" title="Cerebras" width="28" height="28">&nbsp;&nbsp;<img src="docs/assets/vendors/perplexity.svg" alt="Perplexity" title="Perplexity" width="28" height="28">&nbsp;&nbsp;<img src="docs/assets/vendors/azure.svg" alt="Azure" title="Azure" width="28" height="28">&nbsp;&nbsp;<img src="docs/assets/vendors/deepinfra.svg" alt="DeepInfra" title="DeepInfra" width="28" height="28">&nbsp;&nbsp;<img src="docs/assets/vendors/cloudflare.svg" alt="Cloudflare" title="Cloudflare" width="28" height="28">&nbsp;&nbsp;<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/vendors/ollama-dark.svg"><img src="docs/assets/vendors/ollama.svg" alt="Ollama" title="Ollama" width="28" height="28"></picture>&nbsp;&nbsp;<img src="docs/assets/vendors/vllm.svg" alt="vLLM" title="vLLM" width="28" height="28">
-</p>
+**Model providers**: 25 built in, plus any OpenAI-compatible endpoint. [What each supports →](docs/vendors.md)
 
-Also Amazon Bedrock, MiniMax, StepFun, Phonic, Morph, EmpirioLabs, TypeSafe
-and Respan. [All providers and what each supports →](docs/vendors.md)
+<table>
+<tr><td><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/vendors/openai-dark.svg"><img src="docs/assets/vendors/openai.svg" width="20" height="20" align="absmiddle" alt=""></picture>&nbsp;OpenAI</td><td><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/vendors/anthropic-dark.svg"><img src="docs/assets/vendors/anthropic.svg" width="20" height="20" align="absmiddle" alt=""></picture>&nbsp;Anthropic</td><td><img src="docs/assets/vendors/gemini.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;Gemini</td><td><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/vendors/ollama-dark.svg"><img src="docs/assets/vendors/ollama.svg" width="20" height="20" align="absmiddle" alt=""></picture>&nbsp;Ollama</td><td><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/vendors/respan-dark.svg"><img src="docs/assets/vendors/respan.svg" width="20" height="20" align="absmiddle" alt=""></picture>&nbsp;Respan</td></tr>
+<tr><td><img src="docs/assets/vendors/typesafe.png" width="20" height="20" align="absmiddle" alt="">&nbsp;TypeSafe</td><td><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/vendors/groq-dark.svg"><img src="docs/assets/vendors/groq.svg" width="20" height="20" align="absmiddle" alt=""></picture>&nbsp;Groq</td><td><img src="docs/assets/vendors/deepseek.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;DeepSeek</td><td><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/vendors/openrouter-dark.svg"><img src="docs/assets/vendors/openrouter.svg" width="20" height="20" align="absmiddle" alt=""></picture>&nbsp;OpenRouter</td><td><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/vendors/xai-dark.svg"><img src="docs/assets/vendors/xai.svg" width="20" height="20" align="absmiddle" alt=""></picture>&nbsp;xAI</td></tr>
+<tr><td><img src="docs/assets/vendors/mistral.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;Mistral</td><td><img src="docs/assets/vendors/together.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;Together</td><td><img src="docs/assets/vendors/fireworks.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;Fireworks</td><td><img src="docs/assets/vendors/azure.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;Azure OpenAI</td><td><img src="docs/assets/vendors/vllm.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;vLLM</td></tr>
+<tr><td><img src="docs/assets/vendors/cloudflare.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;Cloudflare</td><td><img src="docs/assets/vendors/cerebras.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;Cerebras</td><td><img src="docs/assets/vendors/perplexity.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;Perplexity</td><td><img src="docs/assets/vendors/empiriolabs.png" width="20" height="20" align="absmiddle" alt="">&nbsp;EmpirioLabs AI</td><td><img src="docs/assets/vendors/deepinfra.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;DeepInfra</td></tr>
+<tr><td><img src="docs/assets/hero-src/logos/minimax.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;MiniMax</td><td>Amazon Bedrock</td><td>StepFun</td><td>Phonic</td><td>Morph</td></tr>
+</table>
+
+**Tools**: any MCP server, plus 14 built-in tool vendors any model can use. [All tools →](docs/tool-vendors.md)
+
+<table>
+<tr><td><img src="docs/assets/tool-vendors/apify.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;Apify</td><td><img src="docs/assets/tool-vendors/browserbase.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;Browserbase</td><td><img src="docs/assets/tool-vendors/cloudinary.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;Cloudinary</td><td><img src="docs/assets/tool-vendors/context7.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;Context7</td><td><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/tool-vendors/daytona-dark.png"><img src="docs/assets/tool-vendors/daytona.png" width="20" height="20" align="absmiddle" alt=""></picture>&nbsp;Daytona</td></tr>
+<tr><td><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/tool-vendors/linkup-dark.svg"><img src="docs/assets/tool-vendors/linkup.svg" width="20" height="20" align="absmiddle" alt=""></picture>&nbsp;Linkup</td><td><img src="docs/assets/tool-vendors/reducto.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;Reducto</td><td><img src="docs/assets/tool-vendors/tavily.svg" width="20" height="20" align="absmiddle" alt="">&nbsp;Tavily</td><td><img src="docs/assets/tool-vendors/tinyfish.png" width="20" height="20" align="absmiddle" alt="">&nbsp;TinyFish</td><td><img src="docs/assets/tool-vendors/zep.png" width="20" height="20" align="absmiddle" alt="">&nbsp;Zep</td></tr>
+<tr><td><img src="docs/assets/tool-vendors/e2b.png" width="20" height="20" align="absmiddle" alt="">&nbsp;E2B</td><td><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/tool-vendors/elevenlabs-dark.svg"><img src="docs/assets/tool-vendors/elevenlabs.svg" width="20" height="20" align="absmiddle" alt=""></picture>&nbsp;ElevenLabs</td><td>Exa</td><td>Firecrawl</td></tr>
+</table>
 
 | | Your code calls | Reaches |
 |---|---|---|
