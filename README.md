@@ -161,6 +161,71 @@ print(reply.content[0].text)
 
 The real provider keys stay in the gateway, so `api_key` can be anything.
 
+## Configuration
+
+No config file is needed to start. When you want more, one `gateway.toml` sets
+up keys, providers, routing, tools and tracing. `respan-gateway init` writes a
+commented one from the keys in your environment:
+
+```toml
+# Who may call the gateway. Without keys it answers only on localhost.
+client_keys = [{ name = "app", key = "env:APP_KEY" }]
+
+# ── Providers ─────────────────────────────────────────────────────
+[providers.anthropic]                 # a built-in vendor: just add its key
+vendor = "anthropic"
+key    = "env:ANTHROPIC_API_KEY"
+
+[providers.openai]
+vendor = "openai"
+key    = "env:OPENAI_API_KEY"
+
+[providers.local]                     # any OpenAI-compatible endpoint
+formats  = ["openai-chat"]
+base_url = "http://localhost:8000/v1"
+
+# ── Routes: model names your clients ask for ──────────────────────
+[routes.smart]                        # fallback: Claude, then GPT, each tried twice
+to      = ["anthropic/claude-haiku-5-5", "openai/gpt-6-luna"]
+tries   = 2
+backoff = "250ms"
+
+[routes.fast]                         # hedge: start GPT if Claude is 200ms late
+to    = ["anthropic/claude-haiku-5-5", "openai/gpt-6-luna"]
+hedge = "200ms"
+
+[routes.cheap]                        # the cheapest candidate that can call tools
+to    = ["openai/gpt-6-luna", "anthropic/claude-haiku-5-5"]
+pick  = "cheapest"
+needs = ["tools"]
+
+# ── Tools: any MCP server or built-in tool vendor ─────────────────
+[tools.search]
+vendor = "linkup"
+key    = "env:LINKUP_API_KEY"
+
+[plugins.tool_loop]                   # any model can use them; the gateway runs the calls
+allow     = ["search__*"]
+max_steps = 8
+
+# ── Observability ─────────────────────────────────────────────────
+[plugins.respan]                      # a trace per request in Respan
+key = "env:RESPAN_API_KEY"
+```
+
+```bash
+respan-gateway check     # validate it and print what it serves
+respan-gateway --watch   # reload it on save, no restart
+```
+
+| To configure | Read |
+|---|---|
+| Client keys, limits and who may use what | [Configuration](docs/configuration.md#client-keys) |
+| Providers, base URLs and model lists | [Providers](docs/vendors.md) |
+| Routes, fallback, retries, hedging and pricing | [Routing](docs/configuration.md#routing) |
+| MCP servers, tool vendors and the tool loop | [MCP and tools](docs/mcp.md) |
+| Every option, commented | [`gateway.example.toml`](gateway.example.toml) |
+
 ## Works with your SDK
 
 Every SDK, agent framework and coding agent that lets you set a base URL works
@@ -211,31 +276,6 @@ each one is in one place, so you don't have to dig through each tool's docs.
 | Memory | **31 MB** | 488 MB | 350 MB | 418 MB |
 | 1k streams, success | **100%** | 92–100% | — | 79% |
 | p99 with 5% slow calls | **105 ms** | 2,002 ms | 2,003 ms | 2,024 ms |
-
-## Configuration
-
-Start without a config file. When you need more, `respan-gateway init` writes
-a commented `gateway.toml`:
-
-```toml
-client_keys = [{ name = "app", key = "env:APP_KEY" }]  # who may call the gateway
-
-[providers.anthropic]                   # a known provider: just add a key
-vendor = "anthropic"
-key = "env:ANTHROPIC_API_KEY"
-
-[providers.local]                       # any OpenAI-compatible endpoint
-formats = ["openai-chat"]
-base_url = "http://localhost:8000/v1"
-
-[routes.smart]                          # clients ask for model "smart"
-to = ["anthropic/claude-haiku-5-5", "openai/gpt-6-luna"]
-hedge = "800ms"                         # race the second if the first is slow
-```
-
-`respan-gateway check` validates it, and `--watch` reloads it without a
-restart. See [configuration](docs/configuration.md), [MCP and tools](docs/mcp.md)
-and the full [`gateway.example.toml`](gateway.example.toml).
 
 ## Extend it
 
