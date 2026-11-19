@@ -168,8 +168,10 @@ up keys, providers, routing, tools and tracing (`respan-gateway init` writes a
 starter one):
 
 ```toml
+# ── Client keys ───────────────────────────────────────────────────
 client_keys = [{ name = "app", key = "env:APP_KEY" }]   # who may call the gateway
 
+# ── Providers ─────────────────────────────────────────────────────
 [providers.anthropic]                 # a built-in vendor: just add its key
 vendor = "anthropic"
 key    = "env:ANTHROPIC_API_KEY"
@@ -178,14 +180,17 @@ key    = "env:ANTHROPIC_API_KEY"
 vendor = "openai"
 key    = "env:OPENAI_API_KEY"
 
+# ── Routes ────────────────────────────────────────────────────────
 [routes.smart]                        # fallback: Claude, then GPT, each tried twice
 to    = ["anthropic/claude-haiku-5-5", "openai/gpt-6-luna"]
 tries = 2
 
-[tools.search]                        # web search as MCP tools, for any model
-vendor = "linkup"
-key    = "env:LINKUP_API_KEY"
+# ── Tools ─────────────────────────────────────────────────────────
+[tools.web]                           # search and browse as MCP tools, for any model
+vendor = "tinyfish"
+key    = "env:TINYFISH_API_KEY"
 
+# ── Observability ─────────────────────────────────────────────────
 [plugins.respan]                      # a trace per request in Respan
 key = "env:RESPAN_API_KEY"
 ```
@@ -236,18 +241,7 @@ max_steps = 8
 
 </details>
 
-```bash
-respan-gateway check     # validate it and print what it serves
-respan-gateway --watch   # reload it on save, no restart
-```
-
-| To configure | Read |
-|---|---|
-| Client keys, limits and who may use what | [Configuration](docs/configuration.md#client-keys) |
-| Providers, base URLs and model lists | [Providers](docs/vendors.md) |
-| Routes, fallback, retries, hedging and pricing | [Routing](docs/configuration.md#routing) |
-| MCP servers, tool vendors and the tool loop | [MCP and tools](docs/mcp.md) |
-| Every option, commented | [`gateway.example.toml`](gateway.example.toml) |
+Every option: [configuration docs](https://www.respan.ai/docs/oss-gateway/introduction) and the commented [`gateway.example.toml`](gateway.example.toml).
 
 ## Works with your SDK
 
