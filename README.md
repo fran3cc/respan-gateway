@@ -303,19 +303,29 @@ each one is in one place, so you don't have to dig through each tool's docs.
 - Want to contribute? Read [CONTRIBUTING.md](CONTRIBUTING.md) and pick a [good first issue](https://github.com/respanai/respan-gateway/labels/good%20first%20issue). A new provider is usually one file.
 - Security issues: see [SECURITY.md](SECURITY.md)
 
-## Managed by Respan
-
-Don't want to run it yourself? [Respan](https://respan.ai/ai-gateway) runs the
-same gateway for you at `https://gateway.respan.ai`, with one key for every
-[hosted model](https://www.respan.ai/models), dashboards and evals.
-
-## Contributors
-
-Thank you to everyone who has contributed to Respan Gateway.
+Thank you to everyone who has contributed to Respan Gateway:
 
 <a href="https://github.com/respanai/respan-gateway/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=respanai/respan-gateway" alt="Contributors">
 </a>
+
+## Managed by Respan
+
+<table>
+<tr>
+<td width="55%" valign="middle">
+
+Don't want to run it yourself? [Respan](https://respan.ai/ai-gateway) runs the
+same gateway for you at `https://gateway.respan.ai`: one key for 1,000+
+[hosted models](https://www.respan.ai/models), up to 55% off tokens and a 0%
+fee, with dashboards and evals built in.
+
+[Get an API key →](https://respan.ai/ai-gateway)
+
+</td>
+<td width="45%"><img src="docs/assets/features/managed.png" alt="Up to 55% off tokens with a 0% fee: Gemini and DeepSeek up to 55% off, GPT up to 40%, Claude up to 15%" width="100%"></td>
+</tr>
+</table>
 
 ## License
 
