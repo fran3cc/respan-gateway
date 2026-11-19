@@ -164,14 +164,12 @@ The real provider keys stay in the gateway, so `api_key` can be anything.
 ## Configuration
 
 No config file is needed to start. When you want more, one `gateway.toml` sets
-up keys, providers, routing, tools and tracing. `respan-gateway init` writes a
-commented one from the keys in your environment:
+up keys, providers, routing, tools and tracing (`respan-gateway init` writes a
+starter one):
 
 ```toml
-# Who may call the gateway. Without keys it answers only on localhost.
-client_keys = [{ name = "app", key = "env:APP_KEY" }]
+client_keys = [{ name = "app", key = "env:APP_KEY" }]   # who may call the gateway
 
-# ── Providers ─────────────────────────────────────────────────────
 [providers.anthropic]                 # a built-in vendor: just add its key
 vendor = "anthropic"
 key    = "env:ANTHROPIC_API_KEY"
@@ -180,38 +178,63 @@ key    = "env:ANTHROPIC_API_KEY"
 vendor = "openai"
 key    = "env:OPENAI_API_KEY"
 
-[providers.local]                     # any OpenAI-compatible endpoint
-formats  = ["openai-chat"]
-base_url = "http://localhost:8000/v1"
-
-# ── Routes: model names your clients ask for ──────────────────────
 [routes.smart]                        # fallback: Claude, then GPT, each tried twice
-to      = ["anthropic/claude-haiku-5-5", "openai/gpt-6-luna"]
-tries   = 2
-backoff = "250ms"
-
-[routes.fast]                         # hedge: start GPT if Claude is 200ms late
 to    = ["anthropic/claude-haiku-5-5", "openai/gpt-6-luna"]
-hedge = "200ms"
+tries = 2
 
-[routes.cheap]                        # the cheapest candidate that can call tools
-to    = ["openai/gpt-6-luna", "anthropic/claude-haiku-5-5"]
-pick  = "cheapest"
-needs = ["tools"]
-
-# ── Tools: any MCP server or built-in tool vendor ─────────────────
-[tools.search]
+[tools.search]                        # web search as MCP tools, for any model
 vendor = "linkup"
 key    = "env:LINKUP_API_KEY"
 
-[plugins.tool_loop]                   # any model can use them; the gateway runs the calls
-allow     = ["search__*"]
-max_steps = 8
-
-# ── Observability ─────────────────────────────────────────────────
 [plugins.respan]                      # a trace per request in Respan
 key = "env:RESPAN_API_KEY"
 ```
+
+<details>
+<summary>Hedge a slow provider</summary>
+
+```toml
+[routes.fast]                         # start GPT if Claude is 200ms late
+to    = ["anthropic/claude-haiku-5-5", "openai/gpt-6-luna"]
+hedge = "200ms"
+```
+
+</details>
+<details>
+<summary>Pick the cheapest model</summary>
+
+```toml
+[routes.cheap]                        # the cheapest candidate that can call tools
+to    = ["openai/gpt-6-luna", "anthropic/claude-haiku-5-5"]
+pick  = "cheapest"                    # or first, fastest, weighted, random
+needs = ["tools"]
+```
+
+</details>
+<details>
+<summary>Any OpenAI-compatible endpoint</summary>
+
+```toml
+[providers.local]                     # vLLM, LM Studio, your own server...
+formats  = ["openai-chat"]
+base_url = "http://localhost:8000/v1"
+```
+
+</details>
+<details>
+<summary>An MCP server, with the tool loop</summary>
+
+```toml
+[tools.github]                        # any MCP server over HTTP
+url  = "https://api.githubcopilot.com/mcp/"
+auth = { bearer = "env:GITHUB_TOKEN" }
+
+[plugins.tool_loop]                   # the gateway runs the tool calls for any model
+allow     = ["github__search_*"]
+max_steps = 8
+```
+
+</details>
 
 ```bash
 respan-gateway check     # validate it and print what it serves
