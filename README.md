@@ -303,8 +303,15 @@ each one is in one place, so you don't have to dig through each tool's docs.
 - Want to contribute? Read [CONTRIBUTING.md](CONTRIBUTING.md) and pick a [good first issue](https://github.com/respanai/respan-gateway/labels/good%20first%20issue). A new provider is usually one file.
 - Security issues: see [SECURITY.md](SECURITY.md)
 
-Want it managed? [Respan](https://respan.ai/ai-gateway) runs the gateway for
-you, with dashboards and evals.
+## Managed by Respan
+
+Don't want to run it yourself? [Respan](https://respan.ai/ai-gateway) runs the
+same gateway for you at `https://gateway.respan.ai`, with one key for every
+[hosted model](https://www.respan.ai/models), dashboards and evals.
+
+## Contributors
+
+Thank you to everyone who has contributed to Respan Gateway.
 
 <a href="https://github.com/respanai/respan-gateway/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=respanai/respan-gateway" alt="Contributors">
