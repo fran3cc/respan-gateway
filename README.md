@@ -309,14 +309,13 @@ Thank you to everyone who has contributed to Respan Gateway:
   <img src="https://contrib.rocks/image?repo=respanai/respan-gateway" alt="Contributors">
 </a>
 
-## Managed by Respan
+## Respan managed gateway
 
-Don't want to run it yourself? [Respan](https://respan.ai/ai-gateway) runs the
-same gateway for you at `https://gateway.respan.ai`: one key for 1,000+
-[hosted models](https://www.respan.ai/models), up to 55% off tokens and a 0%
-fee, with dashboards and evals built in. [Get an API key →](https://respan.ai/ai-gateway)
+Respan runs the same gateway for you at [gateway.respan.ai](https://gateway.respan.ai).
 
-<img src="docs/assets/features/managed.png" alt="Up to 55% off tokens with a 0% fee: Gemini and DeepSeek up to 55% off, GPT up to 40%, Claude up to 15%" width="560">
+- One key for every [hosted model](https://www.respan.ai/models)
+- Up to 55% off tokens, 0% fee
+- [Get an API key →](https://respan.ai/ai-gateway)
 
 ## License
 

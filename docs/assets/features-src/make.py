@@ -133,26 +133,6 @@ CARDS['observe'] = ("""
 """)
 
 
-CARDS['managed'] = ("""
-.head { display: flex; align-items: baseline; justify-content: space-between; }
-.big { font-size: 30px; font-weight: 600; letter-spacing: -.03em; }
-.list { margin-top: 12px; padding: 6px 16px; }
-.r { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #1e1e23; font-size: 15px; }
-.r:last-child { border: 0; }
-.r .off { margin-left: auto; color: #31de4b; }
-.foot { margin-top: 12px; display: flex; gap: 10px; }
-.foot .box { padding: 9px 14px; font-size: 14px; }
-""", f"""
-<div class="head"><span class="big">Up to 55% off tokens</span><span class="mid">0% fee</span></div>
-<div class="box list mono">
-<div class="r">{mk('google',18)} gemini-4-argon<span class="off">up to 55% off</span></div>
-<div class="r">{mk('deepseek',18)} deepseek-v4.1-flash<span class="off">up to 55% off</span></div>
-<div class="r">{mk('openai',18)} gpt-6.1-sol<span class="off">up to 40% off</span></div>
-<div class="r">{mk('anthropic',18)} claude-sonnet-5-5<span class="off">up to 15% off</span></div>
-</div>
-<div class="foot mono"><span class="box row">{mk('respan',16)} gateway.respan.ai</span><span class="box">1,000+ models, one key</span></div>
-""")
-
 for name, (css, body) in CARDS.items():
     open(os.path.join(here, name + '.html'), 'w').write(HEAD.replace('@@CSS@@', css).replace('@@BODY@@', body))
 print(' '.join(CARDS))
